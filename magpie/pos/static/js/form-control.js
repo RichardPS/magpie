@@ -29,14 +29,17 @@ $(function(){
 
         $(desc).attr('id', 'id_form-' + x + '-item_name');
         $(desc).attr('name', 'form-' + x + '-item_name');
+        $(desc).attr('required', 'required');
         $(desc).val('');
 
         $(qty).attr('id', 'id_form-' + x + '-item_qty');
         $(qty).attr('name', 'form-' + x + '-item_qty');
+        $(qty).attr('required', 'required');
         $(qty).val('');
 
         $(price).attr('id', 'id_form-' + x + '-item_price');
         $(price).attr('name', 'form-' + x + '-item_price');
+        $(price).attr('required', 'required');
         $(price).val('');
 
         $(selector).after(newElement);
@@ -61,6 +64,13 @@ $(function(){
         }
     }
 
+    function addRequired(){
+        console.log('got here');
+        $('.item-row > div').children('input').each(function(){
+            console.log('each');
+            $(this).attr('required', 'required');
+        });
+    }
 
     $(document).on('click', '.add-row', function(e){
         e.preventDefault();
@@ -71,5 +81,7 @@ $(function(){
         e.preventDefault();
         removeItemRow();
     });
+
+    addRequired();
 
 });

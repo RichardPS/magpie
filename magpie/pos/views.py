@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from .forms import ItemFormSet
-from .forms import ItemForm
+# from .forms import ItemForm
 from .forms import OrderForm
 
 
@@ -11,8 +11,14 @@ def index(
         template_name='pos/index.html',
         page_name='Index'):
 
-    order_form = OrderForm()
-    item_form_set = ItemFormSet()
+    if request.method == 'POST':
+        order_form = OrderForm(request.POST)
+        item_form_set = ItemFormSet(request.POST)
+        if item_form_set.is_vaild():
+            print('Valid')
+    else:
+        order_form = OrderForm()
+        item_form_set = ItemFormSet()
 
     context = {
         'item_form_set': item_form_set,
