@@ -5,3 +5,8 @@ STATUS_OPTIONS = (
     ('complete', 'Complete'),
     ('canceled', 'Canceled'),
 )
+
+AUTH_OPTIONS = (
+    ('dm', 'Department Manager Only'),
+    ('dmmd', 'Department Manager and Managing Director')
+)

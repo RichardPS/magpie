@@ -1,2 +1,35 @@
 {% extends "pos/base.html" %}
 {% load static %}
+
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ order_form.as_ul }}
+        {% for item in item_form_set %}
+            <div class="item-row">
+                <div class="desc-col">
+                    {{ item.item_name.label }}
+                    {{ item.item_name }}
+                </div>
+                <div class ="qty-col">
+                    {{ item.item_qty.label }}
+                    {{ item.item_qty }}
+                </div>
+                <div class = "price-col">
+                    {{ item.item_price.label }}
+                    {{ item.item_price }}
+                </div>
+            </div>
+        {% endfor %}
+        <input type="submit" name="Submit">
+    </form>
+    <div class="add-remove" id="add-remove">
+        <button class="add-row">Add item row</button>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/form-control.js' %}"></script>
+{% endblock scripts %}
