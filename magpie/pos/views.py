@@ -8,7 +8,7 @@ from .forms import ItemForm
 from .forms import OrderForm
 
 from .functions import order_saved
-from .functions import order_value
+from .functions import order_variables
 
 from .models import Item
 from .models import Order
