@@ -6,21 +6,11 @@
     <form method="POST">
         {% csrf_token %}
         {{ order_form.as_ul }}
+        {{ item_form_set.management_form }}
         {% for item in item_form_set %}
-            <div class="item-row">
-                <div class="desc-col">
-                    {{ item.item_name.label }}
-                    {{ item.item_name }}
-                </div>
-                <div class ="qty-col">
-                    {{ item.item_qty.label }}
-                    {{ item.item_qty }}
-                </div>
-                <div class = "price-col">
-                    {{ item.item_price.label }}
-                    {{ item.item_price }}
-                </div>
-            </div>
+        <div class="item-row">
+            {{ item.as_ul }}
+        </div>
         {% endfor %}
         <input type="submit" name="Submit">
     </form>

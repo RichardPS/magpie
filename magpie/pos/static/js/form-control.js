@@ -21,11 +21,12 @@ $(function(){
         console.log('Add Row Fired');
 
         var selector = $('.item-row:last');
+        var form_management = $('#id_form-TOTAL_FORMS');
 
         var newElement = $(selector).clone(true);
-        var desc = $(newElement).find('.desc-col input');
-        var qty = $(newElement).find('.qty-col input');
-        var price = $(newElement).find('.price-col input');
+        var desc = $(newElement).find('input:eq(0)');
+        var qty = $(newElement).find('input:eq(1)');
+        var price = $(newElement).find('input:eq(2)');
 
         $(desc).attr('id', 'id_form-' + x + '-item_name');
         $(desc).attr('name', 'form-' + x + '-item_name');
@@ -46,6 +47,8 @@ $(function(){
 
         x++;
 
+        $(form_management).val(x);
+
         if(x > 1 && x < 3){
             showRemoveBtn();
         }
@@ -54,10 +57,13 @@ $(function(){
 
     function removeItemRow(){
         var selector = $('.item-row:last');
+        var form_management = $('#id_form-TOTAL_FORMS');
 
         $(selector).remove();
 
         x--;
+
+        $(form_management).val(x);
 
         if(x < 2){
             hideRemoveBtn();
@@ -66,7 +72,7 @@ $(function(){
 
     function addRequired(){
         console.log('got here');
-        $('.item-row > div').children('input').each(function(){
+        $('.item-row > li').children('input').each(function(){
             console.log('each');
             $(this).attr('required', 'required');
         });

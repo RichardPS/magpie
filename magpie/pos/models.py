@@ -30,8 +30,8 @@ class Order(models.Model):
         max_length=4,
         choices=AUTH_OPTIONS,
         blank=True)
-    dm_auth = models.BooleanField(blank=True)
-    md_auth = models.BooleanField(blank=True)
+    dm_auth = models.BooleanField(default=False)
+    md_auth = models.BooleanField(default=False)
     decline_message = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
