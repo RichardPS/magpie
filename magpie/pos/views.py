@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 import pdb
 
+from .config import AUTH_OPTIONS
+
 from .forms import ItemFormSet
 from .forms import ItemForm
 from .forms import OrderForm
@@ -24,24 +26,24 @@ def index(
         """ get post data """
         order_form = OrderForm(request.POST)
         item_form_set = ItemFormSet(request.POST)
-
         """ get order variables - order total and if auth if required """
         if item_form_set.is_valid():
             pos_required = order_variables(item_form_set)
+            """ get auth required or reject order request """
+            if pos_required['order_total'] >= 200:
+                """ auth required """
+                auth_required = pos_required['auth_option']
+            else:
+                """ no auth required redirect to exit page """
+                return redirect('index')
 
-        """ get auth required or reject order request """
-        if pos_required['order_total'] >= 200:
-            """ auth required """
-            auth_required = pos_required['auth_option']
-        else:
-            """ no auth required redirect to exit page """
-            return redirect('index')
+        # pdb.set_trace()
 
         """ process order """
         if order_form.is_valid() & item_form_set.is_valid():
             _order = order_form.save(commit=False)
             _order.ordered_by = request.user
-            _order.auth_required = auth_required
+            _order.auth_required = AUTH_OPTIONS[auth_required][0]
             _order.save()
 
         """ get pk for order for ForeignKey assignment """
@@ -54,11 +56,11 @@ def index(
                 _item.order = order_object
                 _item.save()
 
-        """ send email to required auth persons """
+        """ send email to required auth persons, move to summary view?"""
         order_saved(_order.pk)
 
         """ redirect to order summary page """
-        return redirect('index')
+        return redirect('summary/' + str(_order.pk))
     else:
         """ get empty forms """
         order_form = OrderForm()
@@ -68,6 +70,33 @@ def index(
         'item_form_set': item_form_set,
         'order_form': order_form,
         'page_name': page_name,
+    }
+
+    return render(
+        request,
+        template_name,
+        context,
+    )
+
+
+def order_summary(
+        request,
+        pk,
+        template_name='pos/summary.html',
+        page_name='Order Summary'):
+
+    order_details = get_object_or_404(Order, pk=pk)
+    item_details = Item.objects.filter(order__pk=pk)
+    order_total = 0
+    for item in item_details:
+        order_total = order_total + item.item_price * item.item_qty#
+    # pdb.set_trace()
+
+    context = {
+        'page_name': page_name,
+        'order_details': order_details,
+        'item_details': item_details,
+        'order_total': order_total
     }
 
     return render(

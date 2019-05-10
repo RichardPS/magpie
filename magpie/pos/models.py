@@ -27,7 +27,7 @@ class Order(models.Model):
         default=STATUS_OPTIONS[0][0],
         blank=True)
     auth_required = models.CharField(
-        max_length=4,
+        max_length=50,
         choices=AUTH_OPTIONS,
         blank=True)
     dm_auth = models.BooleanField(default=False)
