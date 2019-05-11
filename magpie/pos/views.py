@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView
 
 import pdb
 
@@ -104,3 +105,12 @@ def order_summary(
         template_name,
         context,
     )
+
+
+class AdminOrders(ListView):
+    model = Order
+    template_name = 'admin/order_list.html'
+
+    def get_queryset(self):
+        return super(AdminOrders, self).get_queryset().filter(
+            order_status=self.kwargs['area'])
