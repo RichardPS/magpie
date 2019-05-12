@@ -8,3 +8,12 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.6em;
 }
+
+ul {
+    list-style: none;
+}
+
+ul.pagination li,
+nav ul li {
+    display: inline-block;
+}

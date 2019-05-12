@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+    <h2>{{ page_name }}</h2>
+    <ul>
+        <li>{{ order.ordered_by.get_full_name }}</li>
+        <li>{{ order.company_name }}</li>
+        {% for item in items %}
+            <li>{{ item.item_name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+admin.site.site_header = 'Purchase Order System (Magpie)'
+admin.site.index_title = 'Purchase Order System Admin Area'
+admin.site.site_title = 'Purchase Order System Admin Area'
+
+
 urlpatterns = [
     path('', include('pos.urls')),
     path('admin/', admin.site.urls),
