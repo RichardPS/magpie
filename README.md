@@ -4,12 +4,12 @@ more to come...
 
 ### Todo List
 
-[x] Basic User Order System
+- [x] Basic User Order System
 
-[x] Basic Admin Area
+- [x] Basic Admin Area
 
-[ ] User Registration
+- [ ] User Registration
 
-[ ] Page Permissions
+- [ ] Page Permissions
 
-[ ] More admin functionality
+- [ ] More admin functionality
