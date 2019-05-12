@@ -12,3 +12,8 @@ body {
 ul {
     list-style: none;
 }
+
+ul.pagination li,
+nav ul li {
+    display: inline-block;
+}

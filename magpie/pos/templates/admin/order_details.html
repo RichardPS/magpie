@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <input type=button value="Previous Page" onClick="javascript:history.go(-1);">
     <h2>{{ page_name }}</h2>
     <ul>
@@ -10,4 +11,5 @@
             <li>{{ item.item_name }}</li>
         {% endfor %}
     </ul>
+
 {% endblock %}

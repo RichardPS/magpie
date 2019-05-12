@@ -1,17 +1,19 @@
 # DEV TOOLS
 
-## Commands
+See `requirements.txt` for additional package requirements
 
-`python manage.py devtools/run.py startup`
+`pip install -r devtools/requirements.txt`
 
-`python manage.py devtools/run.py dummydata`
-
-### startup
+## startup
 #### Required for app functionality
 Adds required auth groups
 
-### dummydata
+`python manage.py devtools/run.py startup`
+
+## dummydata
 #### For testing
 Adds dummy users
 
 Adds dummy data
+
+`python manage.py devtools/run.py dummydata`

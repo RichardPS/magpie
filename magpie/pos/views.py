@@ -149,6 +149,7 @@ def order_summary(
 class AdminOrders(ListView):
     model = Order
     template_name = 'admin/order_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(AdminOrders, self).get_context_data(**kwargs)
