@@ -80,6 +80,27 @@ def index(
 
             """ redirect to order summary page """
             return redirect('summary/' + str(_order.pk))
+        else:
+            """ no auth required render order page with info message """
+            """ get empty forms """
+            order_form = OrderForm()
+            item_form_set = ItemFormSet()
+            """ set message """
+            messages.error(
+                request,
+                'Error in data')
+
+            context = {
+                'item_form_set': item_form_set,
+                'order_form': order_form,
+                'page_name': page_name,
+            }
+
+            return render(
+                request,
+                template_name,
+                context,
+            )
 
     else:
         """ get empty forms """
