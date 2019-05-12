@@ -1,0 +1,42 @@
+[
+  {
+    "model":"auth.group",
+    "pk":10,
+    "fields":{
+      "name":"Production",
+      "permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"auth.group",
+    "pk":20,
+    "fields":{
+      "name":"Sales & Marketing",
+      "permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"auth.group",
+    "pk":30,
+    "fields":{
+      "name":"Technical",
+      "permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"auth.group",
+    "pk":40,
+    "fields":{
+      "name":"Finance",
+      "permissions":[
+
+      ]
+    }
+  }
+]
