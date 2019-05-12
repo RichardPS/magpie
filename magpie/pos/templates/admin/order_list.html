@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 
+{% block title %}
+    <title>Orders {{ page_name }}</title>
+{% endblock title %}
+
 {% block content %}
-    <h2>Orders</h2>
+    <h2>Orders {{ page_name }}</h2>
     <ul>
         {% for order in object_list %}
+            <li>{{ order.ordered_by.get_full_name }}</li>
             <li>{{ order.company_name }}</li>
+            <li>{{ order.reason }}</li>
+            <li><a href="/order_details/{{ order.pk }}">Details</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

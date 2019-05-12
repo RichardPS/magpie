@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 import pdb
 
@@ -111,6 +111,23 @@ class AdminOrders(ListView):
     model = Order
     template_name = 'admin/order_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(AdminOrders, self).get_context_data(**kwargs)
+        context['page_name'] = self.kwargs['area'].capitalize()
+        return context
+
     def get_queryset(self):
         return super(AdminOrders, self).get_queryset().filter(
             order_status=self.kwargs['area'])
+
+
+class AdminOrderDetails(DetailView):
+    model = Order
+    template_name = 'admin/order_details.html'
+    pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminOrderDetails, self).get_context_data(**kwargs)
+        context['items'] = Item.objects.filter(order=self.kwargs['pk'])
+        context['page_name'] = 'Order Details'
+        return context

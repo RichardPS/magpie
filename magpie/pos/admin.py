@@ -11,6 +11,7 @@ class OrderAdmin(admin.ModelAdmin):
         'ordered_by',
         'date_ordered',
         'delivery_date',
+        'auth_required',
         'order_status',
     )
     search_fields = (
@@ -22,6 +23,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     list_filter = (
         'order_status',
+        'auth_required',
     )
     readonly_fields = (
         'date_ordered',
