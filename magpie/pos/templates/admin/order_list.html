@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load order_extras %}
 
 {% block title %}
     <title>Orders {{ page_name }}</title>
@@ -20,14 +21,22 @@
         <tr>
             <th>Raised By</th>
             <th>Company</th>
+            <th>Value</th>
             <th>Reason</th>
+            <th>Auth Required</th>
+            <th>DM Auth</th>
+            <th>MD Auth</th>
             <th>View Details</th>
         </tr>
         {% for order in object_list %}
             <tr>
                 <td>{{ order.ordered_by.get_full_name }}</td>
                 <td>{{ order.company_name }}</td>
+                <td>£{% get_total order.item_set.all %}</td>
                 <td>{{ order.reason }}</td>
+                <td>{{ order.get_auth_required_display }}</td>
+                <td>{{ order.get_dm_auth_display }}</td>
+                <td>{{ order.get_md_auth_display }}</td>
                 <td><a href="/order_details/{{ order.pk }}">View Details</a></td>
             </tr>
         {% endfor %}
