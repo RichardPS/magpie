@@ -5,6 +5,17 @@ from .models import Order
 from .models import Item
 
 
+class ItemInline(admin.TabularInline):
+    model = Item
+    extra = 0
+    can_delete = False
+    readonly_fields = (
+        'item_name',
+        'item_qty',
+        'item_price',
+    )
+
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'company_name',
@@ -28,6 +39,9 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = (
         'date_ordered',
     )
+    inlines = [
+        ItemInline,
+    ]
 
 
 class ItemAdmin(admin.ModelAdmin):

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from .config import AUTH_OPTIONS
+from .config import AUTH_RESPONSE
 from .config import STATUS_OPTIONS
 
 
@@ -24,14 +25,22 @@ class Order(models.Model):
     order_status = models.CharField(
         max_length=10,
         choices=STATUS_OPTIONS,
-        default=STATUS_OPTIONS[0][0],
-        blank=True)
+        default=STATUS_OPTIONS[0][0]
+    )
     auth_required = models.CharField(
         max_length=50,
-        choices=AUTH_OPTIONS,
-        blank=True)
-    dm_auth = models.BooleanField(default=False)
-    md_auth = models.BooleanField(default=False)
+        choices=AUTH_OPTIONS
+    )
+    dm_auth = models.CharField(
+        max_length=10,
+        choices=AUTH_RESPONSE,
+        default=AUTH_RESPONSE[0][0]
+    )
+    md_auth = models.CharField(
+        max_length=10,
+        choices=AUTH_RESPONSE,
+        default=AUTH_RESPONSE[0][0]
+    )
     decline_message = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
