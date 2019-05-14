@@ -26,7 +26,7 @@ def order_saved(pk):
     manager_email = email_dict.get(str(user_group))
     # print(manager_email)
 
-    send_email(manager_email, 'tm')
+    send_email(manager_email, 'tm', pk)
 
     """ get total value of order """
     grand_total = 0
@@ -34,7 +34,7 @@ def order_saved(pk):
         grand_total = grand_total + item.item_price * item.item_qty
     # print(grand_total)
     if grand_total > 2000:
-        send_email(MD_EMAIL, 'md')
+        send_email(MD_EMAIL, 'md', pk)
 
 
 def order_variables(items):
@@ -69,7 +69,7 @@ def auth_required(order_value):
     return auth_option
 
 
-def send_email(email, type):
+def send_email(email, type, pk):
     type = type
     subject = 'Auth Order'
     message = 'Email Message'

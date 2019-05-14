@@ -1,15 +1,15 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView
 
-import pdb
+# import pdb
 
 from .config import AUTH_OPTIONS
 from .config import STATUS_OPTIONS
 
 from .forms import ItemFormSet
-from .forms import ItemForm
+# from .forms import ItemForm
 from .forms import OrderForm
 
 from .functions import order_saved
@@ -182,7 +182,7 @@ def cancel_order(
     order_to_cancel.order_status = STATUS_OPTIONS[4][0]
     order_to_cancel.save()
 
-    return redirect('orders/canceled')
+    return redirect('/orders/canceled')
 
 
 def clear_order(
@@ -193,4 +193,4 @@ def clear_order(
     order_to_clear.order_status = STATUS_OPTIONS[3][0]
     order_to_clear.save()
 
-    return redirect('orders/cleared')
+    return redirect('/orders/cleared')

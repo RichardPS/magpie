@@ -17,7 +17,7 @@ AUTH_OPTIONS = (
 
 """ auth response """
 AUTH_RESPONSE = (
-    ('null', 'Null'),
+    ('null', '-'),
     ('accepted', 'Accepted'),
     ('declined', 'Declined')
 )

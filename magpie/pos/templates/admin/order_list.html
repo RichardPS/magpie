@@ -28,7 +28,14 @@
             <th>DM Auth</th>
             <th>MD Auth</th>
             <th>View Details</th>
-            <th>Cancel Order</th>
+
+            {% if page_name == 'Authorised' %}
+                <th>Clear Order</th>
+            {% endif %}
+
+            {% if page_name != 'Canceled' %}
+                <th>Cancel Order</th>
+            {% endif %}
         </tr>
         {% for order in object_list %}
             <tr>
@@ -40,7 +47,12 @@
                 <td>{{ order.get_dm_auth_display }}</td>
                 <td>{{ order.get_md_auth_display }}</td>
                 <td><a href="/order_details/{{ order.pk }}">View Details</a></td>
-                <td><a href="/cancel_order/{{ order.pk }}">Cancel Order</a></td>
+                {% if page_name == 'Authorised' %}
+                    <td><a href="/clear_order/{{ order.pk }}">Clear Order</a></td>
+                {% endif %}
+                {% if page_name != 'Canceled' %}
+                    <td><a href="/cancel_order/{{ order.pk }}">Cancel Order</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
