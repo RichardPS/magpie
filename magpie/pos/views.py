@@ -6,6 +6,7 @@ from django.views.generic import DetailView, ListView
 import pdb
 
 from .config import AUTH_OPTIONS
+from .config import STATUS_OPTIONS
 
 from .forms import ItemFormSet
 from .forms import ItemForm
@@ -172,3 +173,24 @@ class AdminOrderDetails(DetailView):
         context['page_name'] = 'Details for {0} order'.format(
             self.object.company_name)
         return context
+
+def cancel_order(
+        request,
+        pk):
+
+    order_to_cancel = get_object_or_404(Order, pk=pk)
+    order_to_cancel.order_status = STATUS_OPTIONS[4][0]
+    order_to_cancel.save()
+
+    return redirect('orders/canceled')
+
+
+def clear_order(
+        request,
+        pk):
+
+    order_to_clear = get_object_or_404(Order, pk=pk)
+    order_to_clear.order_status = STATUS_OPTIONS[3][0]
+    order_to_clear.save()
+
+    return redirect('orders/cleared')

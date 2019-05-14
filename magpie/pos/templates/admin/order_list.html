@@ -7,9 +7,10 @@
 
 {% block nav %}
     <ul>
-        <li><a href="/orders/raised">Raised</a></li>
         <li><a href="/orders/pending">Pending</a></li>
-        <li><a href="/orders/complete">Complete</a></li>
+        <li><a href="/orders/authorised">Authorised</a></li>
+        <li><a href="/orders/declined">Declined</a></li>
+        <li><a href="/orders/cleared">Cleared</a></li>
         <li><a href="/orders/canceled">Canceled</a></li>
     </ul>
 {% endblock nav %}
@@ -27,6 +28,7 @@
             <th>DM Auth</th>
             <th>MD Auth</th>
             <th>View Details</th>
+            <th>Cancel Order</th>
         </tr>
         {% for order in object_list %}
             <tr>
@@ -38,6 +40,7 @@
                 <td>{{ order.get_dm_auth_display }}</td>
                 <td>{{ order.get_md_auth_display }}</td>
                 <td><a href="/order_details/{{ order.pk }}">View Details</a></td>
+                <td><a href="/cancel_order/{{ order.pk }}">Cancel Order</a></td>
             </tr>
         {% endfor %}
     </table>
