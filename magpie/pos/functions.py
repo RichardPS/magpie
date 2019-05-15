@@ -4,9 +4,11 @@ from django.shortcuts import get_object_or_404
 
 import pdb
 
+from .config import AUTH_RESPONSE
 from .config import GROUP_MANAGERS
 from .config import HOSTNAME
 from .config import MD_EMAIL
+from .config import STATUS_OPTIONS
 
 from .models import Item
 from .models import Order
@@ -103,3 +105,43 @@ def auth_complete(pk, auth):
         if current_md_auth == 'accepted' or current_md_auth == 'declined':
             complete = True
     return complete
+
+
+def accept_auth(pk, auth):
+    order = get_object_or_404(Order, pk=pk)
+    """ set auth for DM/MD to accept """
+    if auth == 'dm':
+        """ set dm auth to accepted """
+        order.dm_auth = AUTH_RESPONSE[1][0]
+    else:
+        """ set md auth to accepted """
+        order.md_auth = AUTH_RESPONSE[1][0]
+
+    """ change order status upon accepted """
+    if order.auth_required == 'dm' and order.dm_auth == AUTH_RESPONSE[1][0]:
+        """ set order status to authorised """
+        order.order_status = STATUS_OPTIONS[1][0]
+    elif order.auth_required == 'dmmd':
+        """ check auth for dm and md and set order status """
+        if order.dm_auth == AUTH_RESPONSE[1][0] and order.md_auth == AUTH_RESPONSE[1][0]:
+            order.order_status = STATUS_OPTIONS[1][0]
+
+    order.save()
+
+    return
+
+
+def decline_auth(pk, auth, message):
+    order = get_object_or_404(Order, pk=pk)
+    if auth == 'dm':
+        order.dm_auth = AUTH_RESPONSE[2][0]
+        order.decline_message = order.decline_message + " -dm- " + message
+        order.order_status = STATUS_OPTIONS[2][0]
+    else:
+        order.md_auth = AUTH_RESPONSE[2][0]
+        order.decline_message = order.decline_message + " -md- " + message
+        order.order_status = STATUS_OPTIONS[2][0]
+
+    order.save()
+
+    return

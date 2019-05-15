@@ -17,8 +17,6 @@
     {% else %}
         <form method="POST">
             {% csrf_token %}
-            <input type="hidden" name="pk" value="{{ order.pk }}">
-            <input type="hidden" name="auth" value="{{ auth }}">
             <input type="hidden" name="action" value="decline">
             <input type="submit" name="decline" value="Decline">
             {{ form }}
@@ -26,8 +24,6 @@
 
         <form method="POST">
             {% csrf_token %}
-            <input type="hidden" name="pk" value="{{ order.pk }}">
-            <input type="hidden" name="auth" value="{{ auth }}">
             <input type="hidden" name="action" value="accept">
             <input type="submit" name="accept" value="Accept">
         </form>
