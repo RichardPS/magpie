@@ -42,3 +42,7 @@ class ItemForm(forms.ModelForm):
 
 
 ItemFormSet = formset_factory(ItemForm, extra=1)
+
+
+class DeclineMessage(forms.Form):
+    decline_message = forms.CharField(widget=forms.Textarea)

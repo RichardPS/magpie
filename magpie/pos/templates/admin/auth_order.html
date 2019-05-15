@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>{{ page_name }}</h2>
+    <ul>
+        <li>{{ order.ordered_by.get_full_name }}</li>
+        <li>{{ order.company_name }}</li>
+        {% for item in items %}
+            <li>{{ item.item_name }}</li>
+            <li>{{ item.item_qty }}</li>
+            <li>{{ item.item_price }}</li>
+        {% endfor %}
+    </ul>
+    {% if actioned %}
+        <p>You have already actioned this order</p>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pk" value="{{ order.pk }}">
+            <input type="hidden" name="auth" value="{{ auth }}">
+            <input type="hidden" name="action" value="decline">
+            <input type="submit" name="decline" value="Decline">
+            {{ form }}
+        </form>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pk" value="{{ order.pk }}">
+            <input type="hidden" name="auth" value="{{ auth }}">
+            <input type="hidden" name="action" value="accept">
+            <input type="submit" name="accept" value="Accept">
+        </form>
+    {% endif %}
+
+
+{% endblock %}

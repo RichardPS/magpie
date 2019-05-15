@@ -1,17 +1,18 @@
 from django.contrib import messages
-# from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
-# import pdb
+import pdb
 
 from .config import AUTH_OPTIONS
+from .config import AUTH_RESPONSE
 from .config import STATUS_OPTIONS
 
+from .forms import DeclineMessage
 from .forms import ItemFormSet
-# from .forms import ItemForm
 from .forms import OrderForm
 
+from .functions import auth_complete
 from .functions import order_saved
 from .functions import order_variables
 
@@ -174,6 +175,7 @@ class AdminOrderDetails(DetailView):
             self.object.company_name)
         return context
 
+
 def cancel_order(
         request,
         pk):
@@ -194,3 +196,45 @@ def clear_order(
     order_to_clear.save()
 
     return redirect('/orders/cleared')
+
+
+class AuthOrder(DetailView):
+    model = Order
+    template_name = 'admin/auth_order.html'
+    pk_url_kwarg = 'pk'
+    form_class = DeclineMessage
+
+    def get_context_data(self, **kwargs):
+        context = super(AuthOrder, self).get_context_data(**kwargs)
+        context['items'] = Item.objects.filter(order=self.kwargs['pk'])
+        context['auth'] = self.kwargs['pk']
+        context['actioned'] = auth_complete(self.kwargs['pk'], self.kwargs['pk'])
+        context['form'] = DeclineMessage(initial={'post': self.object})
+        #pdb.set_trace()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = request.POST.get('pk')
+        auth = request.POST.get('auth')
+        action = request.POST.get('action')
+        order = get_object_or_404(Order, pk=pk)
+        if action == 'accept':
+            if auth == 'dm':
+                order.dm_auth = AUTH_RESPONSE[1][0]
+            else:
+                order.md_auth = AUTH_RESPONSE[1][0]
+        else:
+            if auth == 'dm':
+                order.dm_auth = AUTH_RESPONSE[2][0]
+                order.decline_message = order.decline_message + " | " + request.POST.get('decline_message')
+            else:
+                order.dm_auth = AUTH_RESPONSE[2][0]
+                order.decline_message = order.decline_message + " | " + request.POST.get('decline_message')
+        order.save()
+
+        context = super(AuthOrder, self).get_context_data(**kwargs)
+        context['items'] = Item.objects.filter(order=self.kwargs['pk'])
+        context['auth'] = self.kwargs['auth']
+        context['form'] = DeclineMessage(initial={'post': self.object})
+        return self.render_to_response( context=context)

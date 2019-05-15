@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
 
 import pdb
 
 from .config import GROUP_MANAGERS
+from .config import HOSTNAME
 from .config import MD_EMAIL
 
 from .models import Item
@@ -26,7 +28,7 @@ def order_saved(pk):
     manager_email = email_dict.get(str(user_group))
     # print(manager_email)
 
-    send_email(manager_email, 'tm', pk)
+    send_email(manager_email, 'dm', pk)
 
     """ get total value of order """
     grand_total = 0
@@ -69,10 +71,15 @@ def auth_required(order_value):
     return auth_option
 
 
-def send_email(email, type, pk):
-    type = type
+def complie_email(pk,auth):
+    message = 'Click here {0}/auth_order/?pk={1}&auth={2} to authorise order'.format(HOSTNAME, pk, auth)
+
+    return message
+
+
+def send_email(email, auth, pk):
     subject = 'Auth Order'
-    message = 'Email Message'
+    message = complie_email(pk, auth)
     from_email = 'my@email.com'
     to_email = email
 
@@ -83,3 +90,16 @@ def send_email(email, type, pk):
         [to_email],
         fail_silently=False,
     )
+
+def auth_complete(pk, auth):
+    complete = False
+    order = get_object_or_404(Order, pk=pk)
+    current_dm_auth = order.dm_auth
+    current_md_auth = order.md_auth
+    if auth == 'dm':
+        if current_dm_auth == 'accepted' or current_dm_auth == 'declined':
+            complete = True
+    else:
+        if current_md_auth == 'accepted' or current_md_auth == 'declined':
+            complete = True
+    return complete
