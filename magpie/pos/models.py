@@ -1,13 +1,15 @@
+#3rd party
 from django.conf import settings
 from django.db import models
 
+# local
 from .config import AUTH_OPTIONS
 from .config import AUTH_RESPONSE
 from .config import STATUS_OPTIONS
 
 
-# Create your models here.
 class Order(models.Model):
+    """ order model """
     ordered_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.CharField(
@@ -48,6 +50,7 @@ class Order(models.Model):
 
 
 class Item(models.Model):
+    """ item model """
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=255, verbose_name='Description')
     item_qty = models.IntegerField(verbose_name='Qty')

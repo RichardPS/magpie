@@ -1,17 +1,21 @@
+#3rd party
 from django import forms
 from django.forms import formset_factory
 from django.forms import Textarea
 from django.forms.widgets import TextInput
 
+#local
 from .models import Order
 from .models import Item
 
 
 class DateInput(TextInput):
+    """ custom methios for date field """
     input_type = 'date'
 
 
 class OrderForm(forms.ModelForm):
+    """ form for order model """
     class Meta:
         model = Order
         fields = [
@@ -32,6 +36,7 @@ class OrderForm(forms.ModelForm):
 
 
 class ItemForm(forms.ModelForm):
+    """ form for item model """
     class Meta:
         model = Item
         fields = [
@@ -41,8 +46,10 @@ class ItemForm(forms.ModelForm):
         ]
 
 
+""" item formset """
 ItemFormSet = formset_factory(ItemForm, extra=1)
 
 
+""" decline message form """
 class DeclineMessage(forms.Form):
     decline_message = forms.CharField(widget=forms.Textarea)

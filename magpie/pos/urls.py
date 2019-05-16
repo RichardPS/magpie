@@ -1,6 +1,8 @@
+# 3rd party
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
+# local
 from . import views
 from .views import AdminOrderDetails
 from .views import AdminOrders

@@ -1,9 +1,12 @@
+# 3rd party
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 
+# os
 import pdb
 
+# local
 from .config import AUTH_RESPONSE
 from .config import GROUP_MANAGERS
 from .config import HOSTNAME
@@ -15,6 +18,7 @@ from .models import Order
 
 
 def order_saved(pk):
+    """ process raised order """
     """ get order information """
     order_items = Item.objects.all().filter(order__pk=pk)
     order = Order.objects.get(pk=pk)
@@ -42,7 +46,7 @@ def order_saved(pk):
 
 
 def order_variables(items):
-    """ calculate and return order value """
+    """ calculate and return order value from item set """
     order_total = 0
     items = items
     for item in items:
@@ -61,6 +65,7 @@ def order_variables(items):
 
 
 def auth_required(order_value):
+    """ get authorision requied """
     if order_value < 200:
         """ no PO required """
         auth_option = 'none'
@@ -74,12 +79,14 @@ def auth_required(order_value):
 
 
 def complie_email(pk,auth):
+    """ compile email message """
     message = 'Click here {0}/auth_order/?pk={1}&auth={2} to authorise order'.format(HOSTNAME, pk, auth)
 
     return message
 
 
 def send_email(email, auth, pk):
+    """ send email to recipent to accept of decline """
     subject = 'Auth Order'
     message = complie_email(pk, auth)
     from_email = 'my@email.com'
@@ -108,6 +115,7 @@ def auth_complete(pk, auth):
 
 
 def accept_auth(pk, auth):
+    """ process order accepted request """
     order = get_object_or_404(Order, pk=pk)
     """ set auth for DM/MD to accept """
     if auth == 'dm':
@@ -123,6 +131,7 @@ def accept_auth(pk, auth):
         order.order_status = STATUS_OPTIONS[1][0]
     elif order.auth_required == 'dmmd':
         """ check auth for dm and md and set order status """
+        """ do not change order status if already rejected """
         if order.dm_auth == AUTH_RESPONSE[1][0] and order.md_auth == AUTH_RESPONSE[1][0]:
             order.order_status = STATUS_OPTIONS[1][0]
 
@@ -132,6 +141,7 @@ def accept_auth(pk, auth):
 
 
 def decline_auth(pk, auth, message):
+    """ set order status to declined and add decline message """
     order = get_object_or_404(Order, pk=pk)
     if auth == 'dm':
         order.dm_auth = AUTH_RESPONSE[2][0]

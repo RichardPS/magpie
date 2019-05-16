@@ -1,6 +1,7 @@
+# 3rd party
 from django.contrib import admin
 
-# Register your models here.
+# local
 from .models import Order
 from .models import Item
 

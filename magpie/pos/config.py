@@ -1,3 +1,4 @@
+#os
 import socket
 
 """ status options """

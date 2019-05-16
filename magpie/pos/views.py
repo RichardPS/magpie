@@ -1,3 +1,4 @@
+#3rd party
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -6,8 +7,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 
+# os
 import pdb
 
+# local
 from .config import AUTH_OPTIONS
 from .config import AUTH_RESPONSE
 from .config import STATUS_OPTIONS
@@ -36,6 +39,8 @@ def raise_pos(
         template_name='pos/raise_pos.html',
         page_name='POS System'):
 
+    """ purchase order form """
+    """ POST request - process order """
     if request.method == 'POST':
         """ get post data """
         order_form = OrderForm(request.POST)
@@ -115,6 +120,7 @@ def raise_pos(
             )
 
     else:
+        """ render blank order form """
         """ get empty forms """
         order_form = OrderForm()
         item_form_set = ItemFormSet()
@@ -137,7 +143,7 @@ def order_summary(
         pk,
         template_name='pos/summary.html',
         page_name='Order Summary'):
-
+    """ display summery of order """
     order_details = get_object_or_404(Order, pk=pk)
     item_details = Item.objects.filter(order__pk=pk)
     order_total = 0
@@ -164,6 +170,7 @@ class AdminOrders(ListView):
     template_name = 'admin/order_list.html'
     paginate_by = 10
 
+    """ admin area, view orders in each stage """
     def get_context_data(self, **kwargs):
         context = super(AdminOrders, self).get_context_data(**kwargs)
         context['page_name'] = self.kwargs['area'].capitalize()
@@ -180,6 +187,7 @@ class AdminOrderDetails(DetailView):
     template_name = 'admin/order_details.html'
     pk_url_kwarg = 'pk'
 
+    """ admin view order details """
     def get_context_data(self, **kwargs):
         context = super(AdminOrderDetails, self).get_context_data(**kwargs)
         context['items'] = Item.objects.filter(order=self.kwargs['pk'])
@@ -192,6 +200,7 @@ def cancel_order(
         request,
         pk):
 
+    """ change order status to cenceled """
     order_to_cancel = get_object_or_404(Order, pk=pk)
     order_to_cancel.order_status = STATUS_OPTIONS[4][0]
     order_to_cancel.save()
@@ -203,6 +212,7 @@ def clear_order(
         request,
         pk):
 
+    """ change order status to cleared """
     order_to_clear = get_object_or_404(Order, pk=pk)
     order_to_clear.order_status = STATUS_OPTIONS[3][0]
     order_to_clear.save()
@@ -217,6 +227,7 @@ class AuthOrder(DetailView):
     pk_url_kwarg = 'pk'
     form_class = DeclineMessage
 
+    """ page to accept/decline order """
     def get_context_data(self, **kwargs):
         context = super(AuthOrder, self).get_context_data(**kwargs)
         context['items'] = Item.objects.filter(order=self.kwargs['pk'])
@@ -225,6 +236,7 @@ class AuthOrder(DetailView):
         context['form'] = DeclineMessage(initial={'post': self.object})
         return context
 
+    """ process form post data """
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         pk = self.kwargs['pk']
