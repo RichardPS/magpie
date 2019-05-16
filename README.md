@@ -10,8 +10,8 @@ more to come...
 
 - [ ] Futher Admin View Functionality
 
-- [ ] User Registration
+- [x] User Registration
 
-- [ ] Page Permissions
+- [x] Page Permissions
 
 - [ ] More admin functionality
