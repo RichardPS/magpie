@@ -1,17 +1,39 @@
 {% extends "base.html" %}
+{% load order_extras %}
 
 {% block content %}
 
     <h2>{{ page_name }}</h2>
+
     <ul>
-        <li>{{ order.ordered_by.get_full_name }}</li>
+        <li>Ordered By: {{ order.ordered_by.get_full_name }}</li>
+        <li>Order Date: {{ order.date_ordered }}</li>
+        <li>Expected Delivery: {{ order.delivery_date }}</li>
+        <li>Reason: {{ order.reason }}</li>
+    </ul>
+
+    <ul class="company-details">
         <li>{{ order.company_name }}</li>
+        <li>{{ order.address_one }}</li>
+        <li>{{ order.address_two }}</li>
+        <li>{{ order.city }}</li>
+        <li>{{ order.county }}</li>
+        <li>{{ order.post_code }}</li>
+        <li>{{ order.telephone }}</li>
+    </ul>
+
+    <ul class="order-items">
         {% for item in items %}
             <li>{{ item.item_name }}</li>
             <li>{{ item.item_qty }}</li>
-            <li>{{ item.item_price }}</li>
+            <li>£{{ item.item_price }}</li>
         {% endfor %}
     </ul>
+
+    <ul>
+        <li>Order Total: £{% get_total order.item_set.all %}</li>
+    </ul>
+
     {% if actioned %}
         <p>You have already actioned this order</p>
     {% else %}

@@ -59,7 +59,7 @@ class CatchAllExceptions(click.Group):
 
 
 @click.command(help='Startup')
-def startup():
+def runfirst():
     """ import required groups """
     _make_group_migrations()
     success('Group migration success')
@@ -82,7 +82,7 @@ def cli():
 
 
 cli.add_command(dummydata)
-cli.add_command(startup)
+cli.add_command(runfirst)
 
 
 if __name__ == '__main__':

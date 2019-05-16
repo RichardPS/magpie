@@ -2,5 +2,7 @@
 
 {% block content %}
 <a href="{% url 'raise_pos' %}">Raise Order</a>
-<a href="orders/raised">Admin Area</a>
+{% if user.is_staff %}
+<a href="orders/pending">Admin Area</a>
+{% endif %}
 {% endblock content %}

@@ -1,8 +1,16 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static order_extras %}
 
 {% block content %}
 <h1>Order Summary</h1>
+
+    <ul>
+        <li>Ordered By: {{ order_details.ordered_by.get_full_name }}</li>
+        <li>Order Date: {{ order_details.date_ordered }}</li>
+        <li>Expected Delivery: {{ order_details.delivery_date }}</li>
+        <li>Reason: {{ order_details.reason }}</li>
+    </ul>
+
     <ul>
         <li>Company Name: {{ order_details.company_name }}</li>
         <li>Address One: {{ order_details.address_one }}</li>
@@ -23,7 +31,7 @@
             <th>Quantity</th>
             <th>Price</th>
         </tr>
-    {% for item in item_details %}
+    {% for item in order_details.item_set.all %}
         <tr>
             <td>{{ item.item_name }}</td>
             <td>{{ item.item_qty }}</td>
@@ -32,9 +40,11 @@
     {% endfor %}
         <tr>
             <td colspan="2">Total</td>
-            <td>{{ order_total }}</td>
+            <td>{% get_total order_details.item_set.all %}</td>
         </tr>
     </table>
+
+    <a href="{% url 'index' %}">Close</a>
 
 {% endblock content %}
 

@@ -141,16 +141,10 @@ def order_summary(
         page_name='Order Summary'):
     """ display summery of order """
     order_details = get_object_or_404(Order, pk=pk)
-    item_details = Item.objects.filter(order__pk=pk)
-    order_total = 0
-    for item in item_details:
-        order_total = order_total + item.item_price * item.item_qty
 
     context = {
         'page_name': page_name,
-        'order_details': order_details,
-        'item_details': item_details,
-        'order_total': order_total
+        'order_details': order_details
     }
 
     return render(
