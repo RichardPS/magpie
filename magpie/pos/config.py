@@ -1,6 +1,3 @@
-#os
-import socket
-
 """ status options """
 STATUS_OPTIONS = (
     ('pending', 'Pending'),
@@ -39,7 +36,5 @@ GROUP_MANAGERS = {
 MD_EMAIL = "geoff.millington@primarysite.net"
 
 """ hostname """
-try:
-    HOSTNAME = socket.gethostname()
-except:
-    HOSTNAME = 'localhost'
+""" TESTING ONLY """
+HOSTNAME = 'localhost'

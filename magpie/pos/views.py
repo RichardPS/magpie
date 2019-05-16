@@ -1,4 +1,4 @@
-#3rd party
+# 3rd party
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -7,12 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 
-# os
-import pdb
-
 # local
 from .config import AUTH_OPTIONS
-from .config import AUTH_RESPONSE
 from .config import STATUS_OPTIONS
 
 from .forms import DeclineMessage
@@ -232,7 +228,9 @@ class AuthOrder(DetailView):
         context = super(AuthOrder, self).get_context_data(**kwargs)
         context['items'] = Item.objects.filter(order=self.kwargs['pk'])
         context['auth'] = self.kwargs['pk']
-        context['actioned'] = auth_complete(self.kwargs['pk'], self.kwargs['auth'])
+        context['actioned'] = auth_complete(
+            self.kwargs['pk'],
+            self.kwargs['auth'])
         context['form'] = DeclineMessage(initial={'post': self.object})
         return context
 
@@ -242,7 +240,6 @@ class AuthOrder(DetailView):
         pk = self.kwargs['pk']
         auth = self.kwargs['auth']
         action = request.POST.get('action')
-        order = get_object_or_404(Order, pk=pk)
         if action == 'accept':
             accept_auth(pk, auth)
         else:

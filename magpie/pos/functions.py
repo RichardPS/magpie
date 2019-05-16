@@ -1,10 +1,6 @@
 # 3rd party
-from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
-
-# os
-import pdb
 
 # local
 from .config import AUTH_RESPONSE
@@ -78,9 +74,16 @@ def auth_required(order_value):
     return auth_option
 
 
-def complie_email(pk,auth):
+def message_link(pk, auth):
+    link_url = '{0}/auth_order/?pk={1}&auth={2}'.format(HOSTNAME, pk, auth)
+    return link_url
+
+
+def complie_email(pk, auth):
     """ compile email message """
-    message = 'Click here {0}/auth_order/?pk={1}&auth={2} to authorise order'.format(HOSTNAME, pk, auth)
+    message = 'Click here {0} to authorise order'.format(
+        message_link(pk, auth)
+        )
 
     return message
 
@@ -99,6 +102,7 @@ def send_email(email, auth, pk):
         [to_email],
         fail_silently=False,
     )
+
 
 def auth_complete(pk, auth):
     complete = False

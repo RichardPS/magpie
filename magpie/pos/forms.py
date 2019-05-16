@@ -1,10 +1,10 @@
-#3rd party
+# 3rd party
 from django import forms
 from django.forms import formset_factory
 from django.forms import Textarea
 from django.forms.widgets import TextInput
 
-#local
+# local
 from .models import Order
 from .models import Item
 
@@ -46,10 +46,10 @@ class ItemForm(forms.ModelForm):
         ]
 
 
+class DeclineMessage(forms.Form):
+    """ decline message form """
+    decline_message = forms.CharField(widget=forms.Textarea)
+
+
 """ item formset """
 ItemFormSet = formset_factory(ItemForm, extra=1)
-
-
-""" decline message form """
-class DeclineMessage(forms.Form):
-    decline_message = forms.CharField(widget=forms.Textarea)

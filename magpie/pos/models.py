@@ -1,4 +1,4 @@
-#3rd party
+# 3rd party
 from django.conf import settings
 from django.db import models
 
@@ -18,7 +18,8 @@ class Order(models.Model):
     address_two = models.CharField(
         max_length=255, blank=True, verbose_name='Address Two')
     city = models.CharField(max_length=255, verbose_name='City')
-    county = models.CharField(max_length=255, blank=True, verbose_name='County')
+    county = models.CharField(
+        max_length=255, blank=True, verbose_name='County')
     post_code = models.CharField(max_length=255, verbose_name='Postcode')
     telephone = models.CharField(max_length=255, verbose_name='Telephone')
     reason = models.CharField(max_length=255, verbose_name='Reason for Order')
