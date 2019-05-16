@@ -1,11 +1,16 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
 from . import views
 from .views import AdminOrderDetails
 from .views import AdminOrders
+from .views import Index
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', Index.as_view(), name='index'),
+    path('raise_pos/', views.raise_pos, name='raise_pos'),
+    path('login/', auth_views.LoginView.as_view(), {'template_name': 'login.html'}, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('summary/<int:pk>', views.order_summary, name='order_summary'),
     path('cancel_order/<int:pk>', views.cancel_order, name='cancel_order'),
     path('clear_order/<int:pk>', views.clear_order, name='clear_order'),

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ order_form.as_ul }}
+        {{ item_form_set.management_form }}
+        {% for item in item_form_set %}
+        <div class="item-row">
+            {{ item.as_ul }}
+        </div>
+        {% endfor %}
+        <input type="submit" name="Submit">
+    </form>
+    <div class="add-remove" id="add-remove">
+        <button class="add-row">Add item row</button>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/form-control.js' %}"></script>
+{% endblock scripts %}

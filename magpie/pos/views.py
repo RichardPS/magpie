@@ -1,7 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
+from django.utils.decorators import method_decorator
 
 import pdb
 
@@ -23,10 +26,14 @@ from .models import Item
 from .models import Order
 
 
-# Create your views here.
-def index(
+class Index(TemplateView):
+    template_name = 'pos/index.html'
+
+
+@login_required
+def raise_pos(
         request,
-        template_name='pos/index.html',
+        template_name='pos/raise_pos.html',
         page_name='POS System'):
 
     if request.method == 'POST':
@@ -151,6 +158,7 @@ def order_summary(
     )
 
 
+@method_decorator(staff_member_required, name='dispatch')
 class AdminOrders(ListView):
     model = Order
     template_name = 'admin/order_list.html'
@@ -166,6 +174,7 @@ class AdminOrders(ListView):
             order_status=self.kwargs['area'])
 
 
+@method_decorator(staff_member_required, name='dispatch')
 class AdminOrderDetails(DetailView):
     model = Order
     template_name = 'admin/order_details.html'
@@ -201,6 +210,7 @@ def clear_order(
     return redirect('/orders/cleared')
 
 
+@method_decorator(staff_member_required, name='dispatch')
 class AuthOrder(DetailView):
     model = Order
     template_name = 'admin/auth_order.html'
