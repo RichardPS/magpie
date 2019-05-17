@@ -10,6 +10,7 @@ class ItemInline(admin.TabularInline):
     model = Item
     extra = 0
     can_delete = False
+    show_change_link = True
     readonly_fields = (
         'item_name',
         'item_qty',
