@@ -1,7 +1,5 @@
 from django import template
 
-import pdb
-
 register = template.Library()
 
 
