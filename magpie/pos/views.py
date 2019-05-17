@@ -3,8 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, ListView, TemplateView
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
+from django.views.generic import DetailView
+from django.views.generic import ListView
+from django.views.generic import TemplateView
+from django.views.generic import FormView
 from django.utils.decorators import method_decorator
 
 # local
