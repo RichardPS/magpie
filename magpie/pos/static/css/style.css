@@ -1,29 +1,52 @@
-// MAIN STYLE
+/* MAIN STYLE
+============= */
 html {
   font-size: 62.5%;
   background-color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.6em;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.6em;
+  margin: 0;
+  padding: 0;
+}
+
+#admin-bar {
+  display: block;
+  position: relative;
+  height: 20px;
+  background: #333;
+  padding: 4px;
+  color: #ccc;
+}
+
+#admin-bar a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  float: right;
 }
 
 .container {
-    font-size: 1.6rem;
+  font-size: 1.6rem;
+  padding: 10px;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
-
 
 /* PAGINATION */
 ul.pagination li,
 nav ul li {
-    display: inline-block;
-    margin: 2px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  display: inline-block;
+  margin: 2px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

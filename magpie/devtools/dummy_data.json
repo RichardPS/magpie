@@ -236,8 +236,8 @@
       "date_ordered":"2019-05-12T21:14:53.516Z",
       "order_status":"canceled",
       "auth_required":"dm",
-      "dm_auth":"True",
-      "md_auth":"False",
+      "dm_auth":"null",
+      "md_auth":"null",
       "decline_message":""
     }
   },
@@ -346,8 +346,8 @@
       "date_ordered":"2019-05-12T21:20:41.630Z",
       "order_status":"canceled",
       "auth_required":"dmmd",
-      "dm_auth":"0",
-      "md_auth":"0",
+      "dm_auth":"null",
+      "md_auth":"null",
       "decline_message":"No your not gaming at work."
     }
   },

@@ -12,15 +12,17 @@
     {% endif %}
 
     <form method="POST">
-        {% csrf_token %}
-        {{ order_form.as_ul }}
-        {{ item_form_set.management_form }}
-        {% for item in item_form_set %}
-        <div class="item-row">
-            {{ item.as_ul }}
-        </div>
-        {% endfor %}
-        <input type="submit" name="Submit">
+        <ul>
+            {% csrf_token %}
+            {{ order_form.as_ul }}
+            {{ item_form_set.management_form }}
+            {% for item in item_form_set %}
+            <div class="item-row">
+                {{ item.as_ul }}
+            </div>
+            {% endfor %}
+            <input type="submit" name="Submit">
+        </ul>
     </form>
     <div class="add-remove" id="add-remove">
         <button class="add-row">Add item row</button>
