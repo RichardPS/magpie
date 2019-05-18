@@ -34,6 +34,17 @@ class OrderForm(forms.ModelForm):
             'delivery_date': DateInput(attrs={'class': 'date'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
+        self.fields['company_name'].widget.attrs['class'] = 'form-control'
+        self.fields['address_one'].widget.attrs['class'] = 'form-control'
+        self.fields['address_two'].widget.attrs['class'] = 'form-control'
+        self.fields['city'].widget.attrs['class'] = 'form-control'
+        self.fields['county'].widget.attrs['class'] = 'form-control'
+        self.fields['post_code'].widget.attrs['class'] = 'form-control'
+        self.fields['telephone'].widget.attrs['class'] = 'form-control'
+        self.fields['reason'].widget.attrs['class'] = 'form-control'
+
 
 class ItemForm(forms.ModelForm):
     """ form for item model """

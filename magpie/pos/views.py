@@ -35,7 +35,7 @@ class Index(TemplateView):
 def raise_pos(
         request,
         template_name='pos/raise_pos.html',
-        page_name='POS System'):
+        page_name='Raise Purchase Order'):
 
     """ purchase order form """
     """ POST request - process order """

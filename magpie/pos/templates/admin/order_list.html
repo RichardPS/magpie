@@ -6,19 +6,17 @@
 {% endblock title %}
 
 {% block nav %}
-    <ul>
-        <li><a href="/orders/pending">Pending</a></li>
-        <li><a href="/orders/authorised">Authorised</a></li>
-        <li><a href="/orders/declined">Declined</a></li>
-        <li><a href="/orders/cleared">Cleared</a></li>
-        <li><a href="/orders/canceled">Canceled</a></li>
-    </ul>
+    <a class="nav-item nav-link btn-primary" href="/orders/pending">Pending</a>
+    <a class="nav-item nav-link btn-primary" href="/orders/authorised">Authorised</a>
+    <a class="nav-item nav-link btn-primary" href="/orders/declined">Declined</a>
+    <a class="nav-item nav-link btn-primary" href="/orders/cleared">Cleared</a>
+    <a class="nav-item nav-link btn-primary" href="/orders/canceled">Canceled</a>
 {% endblock nav %}
 
 {% block content %}
 
     <h2>Orders {{ page_name }}</h2>
-    <table width="90%" border="1" cellpadding="5" cellspacing="0">
+    <table class="table" width="90%" cellpadding="5" cellspacing="0">
         <tr>
             <th>Raised By</th>
             <th>Company</th>
@@ -57,26 +55,28 @@
         {% endfor %}
     </table>
 
-    {% if is_paginated %}
-      <ul class="pagination">
-        {% if page_obj.has_previous %}
-          <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&laquo;</span></li>
+    <div class="btn-toolbar pagination">
+        {% if is_paginated %}
+          <ul class="btn-group">
+            {% if page_obj.has_previous %}
+              <li class="btn btn-secondary"><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled btn btn-secondary"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active btn btn-secondary"><span>{{ i }}</span></li>
+              {% else %}
+                <li class="btn btn-secondary"><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="btn btn-secondary"><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled btn btn-secondary"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
         {% endif %}
-        {% for i in paginator.page_range %}
-          {% if page_obj.number == i %}
-            <li class="active"><span>{{ i }}</span></li>
-          {% else %}
-            <li><a href="?page={{ i }}">{{ i }}</a></li>
-          {% endif %}
-        {% endfor %}
-        {% if page_obj.has_next %}
-          <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-        {% else %}
-          <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </ul>
-    {% endif %}
+    </div>
 
 {% endblock %}
