@@ -5,49 +5,55 @@
 
     <h2>{{ page_name }}</h2>
 
-    <ul>
+    <ul class="ul_block">
         <li>Ordered By: {{ order.ordered_by.get_full_name }}</li>
         <li>Order Date: {{ order.date_ordered }}</li>
         <li>Expected Delivery: {{ order.delivery_date }}</li>
         <li>Reason: {{ order.reason }}</li>
     </ul>
-
-    <ul class="company-details">
+    <br>
+    <h2>Company Address</h3>
+    <ul class="ul_block">
         <li>{{ order.company_name }}</li>
         <li>{{ order.address_one }}</li>
-        <li>{{ order.address_two }}</li>
+        {% if order.address_two %}
+            <li>{{ order.address_two }}</li>
+        {% endif %}
         <li>{{ order.city }}</li>
         <li>{{ order.county }}</li>
         <li>{{ order.post_code }}</li>
         <li>{{ order.telephone }}</li>
     </ul>
+    <br>
+    <h2>Order Items</h2>
+    {% for item in order.item_set.all %}
+        <ul class="order-item-block">
+                <li>{{ item.item_name }}</li>
+                <li>{{ item.item_qty }}</li>
+                <li>£{{ item.item_price }}</li>
+        </ul>
+    {% endfor %}
 
-    <ul class="order-items">
-        {% for item in items %}
-            <li>{{ item.item_name }}</li>
-            <li>{{ item.item_qty }}</li>
-            <li>£{{ item.item_price }}</li>
-        {% endfor %}
-    </ul>
-
-    <ul>
+    <ul class="order-item-block">
         <li>Order Total: £{% get_total order.item_set.all %}</li>
     </ul>
 
     {% if actioned %}
         <p>You have already actioned this order</p>
     {% else %}
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="decline">
-            <input type="submit" name="decline" value="Decline">
-            {{ form }}
-        </form>
 
         <form method="POST">
             {% csrf_token %}
             <input type="hidden" name="action" value="accept">
-            <input type="submit" name="accept" value="Accept">
+            <input type="submit" name="accept" value="Accept" class="btn btn-success">
+        </form>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="decline">
+            {{ form }}
+            <br>
+            <input type="submit" name="decline" value="Decline" class="decline-btn btn btn-danger">
         </form>
     {% endif %}
 

@@ -142,11 +142,11 @@ def order_summary(
         template_name='pos/summary.html',
         page_name='Order Summary'):
     """ display summery of order """
-    order_details = get_object_or_404(Order, pk=pk)
+    order = get_object_or_404(Order, pk=pk)
 
     context = {
         'page_name': page_name,
-        'order_details': order_details
+        'order': order
     }
 
     return render(
@@ -182,7 +182,6 @@ class AdminOrderDetails(DetailView):
     """ admin view order details """
     def get_context_data(self, **kwargs):
         context = super(AdminOrderDetails, self).get_context_data(**kwargs)
-        context['items'] = Item.objects.filter(order=self.kwargs['pk'])
         context['page_name'] = 'Details for {0} order'.format(
             self.object.company_name)
         return context
@@ -222,7 +221,8 @@ class AuthOrder(DetailView):
     """ page to accept/decline order """
     def get_context_data(self, **kwargs):
         context = super(AuthOrder, self).get_context_data(**kwargs)
-        context['items'] = Item.objects.filter(order=self.kwargs['pk'])
+        context['page_name'] = 'Authorise order for {0}'.format(
+            self.object.company_name)
         context['auth'] = self.kwargs['pk']
         context['actioned'] = auth_complete(
             self.kwargs['pk'],

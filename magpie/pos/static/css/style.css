@@ -9,6 +9,14 @@
   font-style: normal;
 }
 
+.icon-printer-tool:before{content:'\0041';}
+.icon-primarysite-logo-arrow:before{
+  position: relative;
+  top: 3px;
+  font-family: 'Glyphter';
+  content:'\0042';
+}
+
 /* MAIN STYLE
 ============= */
 html {
@@ -20,10 +28,27 @@ body {
   font-size: 1.6em;
 }
 
+footer {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 36px;
+  bottom: 0;
+  left: 0;
+  background: #333;
+  padding: 4px 10px 6px 10px;
+}
+
+.primarysite {
+  text-align: right;
+  color: #ccc;
+  font-size: 1.6rem;
+}
+
 .container {
   display: block;
   position: relative;
-  padding: 10px 20px;
+  padding: 20px 20px 80px;
 }
 
 .content {
@@ -34,9 +59,9 @@ body {
 #admin-bar {
   display: block;
   position: relative;
-  height: 32px;
+  height: 36px;
   background: #333;
-  padding: 4px 10px;
+  padding: 4px 10px 6px 10px;
   color: #ccc;
 }
 
@@ -121,11 +146,15 @@ ul.order-item-block li:last-child {
 }
 
 #item-form .item-row li:nth-child(1) input {
-  width: 30rem;
+  min-width: 30rem;
 }
 
 #item-form .item-row li:nth-child(2) input {
-  width: 10rem;
+  max-width: 10rem;
+}
+
+#id_decline_message {
+  vertical-align: top;
 }
 
 /* BOOTSTRAP ORDERRIDES

@@ -10,8 +10,6 @@
         <a href="#" id="print-button" onclick="window.print();return false;">A</a>
     </div>
 
-    <h1>{{ page_name }}</h1>
-
     <ul class="ul_block">
         <li>Ordered By: {{ order.ordered_by.get_full_name }}</li>
         <li>Order Date: {{ order.date_ordered }}</li>
@@ -33,7 +31,7 @@
     </ul>
     <br>
     <h2>Order Items</h2>
-    {% for item in items %}
+    {% for item in order.item_set.all %}
         <ul class="order-item-block">
                 <li>{{ item.item_name }}</li>
                 <li>{{ item.item_qty }}</li>
