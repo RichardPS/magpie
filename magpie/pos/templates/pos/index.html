@@ -5,6 +5,7 @@
         <a href="{% url 'raise_pos' %}" class="nav-item btn btn-primary">Raise Order</a>
         {% if user.is_staff %}
         <a href="orders/pending" class="btn btn-primary">Admin Area</a>
+        <a href="{% url 'user_management' %}" class="btn btn-primary">User Managemant</a>
         {% endif %}
     </section>
 {% endblock content %}

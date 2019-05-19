@@ -6,7 +6,9 @@ from django.contrib.auth import views as auth_views
 from . import views
 from .views import AdminOrderDetails
 from .views import AdminOrders
+from .views import EditUser
 from .views import Index
+from .views import UserManagement
 
 urlpatterns = [
     path('', Index.as_view(), name='index'),
@@ -17,6 +19,8 @@ urlpatterns = [
     path('auth_order/<int:pk>/<slug:auth>/', views.AuthOrder.as_view()),
     path('orders/<slug:area>', AdminOrders.as_view()),
     path('order_details/<int:pk>', AdminOrderDetails.as_view()),
+    path('user_management', UserManagement.as_view(), name='user_management'),
+    path('edit_user/<int:pk>', EditUser.as_view()),
     path('login/', auth_views.LoginView.as_view(),
          {'template_name': 'login.html'}, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),

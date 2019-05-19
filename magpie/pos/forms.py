@@ -1,5 +1,6 @@
 # 3rd party
 from django import forms
+from django.contrib.auth.models import User
 from django.forms import formset_factory
 from django.forms import Textarea
 from django.forms.widgets import TextInput

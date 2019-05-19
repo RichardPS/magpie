@@ -1,12 +1,16 @@
 # 3rd party
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
+from django import forms
+from django.forms.models import modelform_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
+from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 
 # local
@@ -16,6 +20,7 @@ from .config import STATUS_OPTIONS
 from .forms import DeclineMessage
 from .forms import ItemFormSet
 from .forms import OrderForm
+# from .forms import UserEditForm
 
 from .functions import accept_auth
 from .functions import auth_complete
@@ -243,3 +248,27 @@ class AuthOrder(DetailView):
             decline_auth(pk, auth, message)
 
         return HttpResponseRedirect(self.request.path_info)
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class UserManagement(ListView):
+    model = User
+    template_name = 'admin/user_management.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserManagement, self).get_context_data(**kwargs)
+        context['page_name'] = 'User Management'
+        return context
+
+@method_decorator(staff_member_required, name='dispatch')
+class EditUser(UpdateView):
+    model = User
+    fields = [
+        'first_name',
+        'last_name',
+        'username',
+        'is_active',
+        'groups',
+        'is_staff'
+        ]
+    template_name_suffix = '_update_form'
