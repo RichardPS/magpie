@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 
+{% block header %}
+    {% include 'pos/nav.html' %}
+{% endblock header %}
+
+{% block nav %}
+    <a href="/add_user" class="nav-item btn btn-primary">Add User</a>
+{% endblock nav %}
+
 {% block content %}
+<br>
+<h2>Managers</h2>
 <table class="table">
     <tr>
         <th>Name</th>
@@ -14,7 +24,67 @@
         <th>Edit</th>
     </tr>
    {% for item in object_list %}
-        {% if not item.is_superuser %}
+        {% if item.is_superuser and item.is_active %}
+        <tr class="">
+            <td class="">{{ item.get_full_name }}</td>
+            <td class="">{{ item.username }}</td>
+            <td class="">{{ item.email }}</td>
+            <td class="icon-font">{{ item.is_active|make_list|first }}</td>
+            <td class="icon-font">{{ item.is_staff|make_list|first }}</td>
+            <td class="">{{ item.groups.all.0 }}</td>
+            <td class="">{{ item.last_login }}</td>
+            <td class="">{{ item.date_joined }}</td>
+            <td class=""><a href="edit_user/{{ item.pk }}">Edit User</a></td>
+        </tr>
+        {% endif %}
+   {% endfor %}
+</table>
+<br>
+<h2>Users</h2>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Is User</th>
+        <th>Is Manager</th>
+        <th>Group</th>
+        <th>Last Login</th>
+        <th>Date Joined</th>
+        <th>Edit</th>
+    </tr>
+   {% for item in object_list %}
+        {% if not item.is_superuser and item.is_active %}
+        <tr class="">
+            <td class="">{{ item.get_full_name }}</td>
+            <td class="">{{ item.username }}</td>
+            <td class="">{{ item.email }}</td>
+            <td class="icon-font">{{ item.is_active|make_list|first }}</td>
+            <td class="icon-font">{{ item.is_staff|make_list|first }}</td>
+            <td class="">{{ item.groups.all.0 }}</td>
+            <td class="">{{ item.last_login }}</td>
+            <td class="">{{ item.date_joined }}</td>
+            <td class=""><a href="edit_user/{{ item.pk }}">Edit User</a></td>
+        </tr>
+        {% endif %}
+   {% endfor %}
+</table>
+<br>
+<h2>Inactive Users</h2>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Is User</th>
+        <th>Is Manager</th>
+        <th>Group</th>
+        <th>Last Login</th>
+        <th>Date Joined</th>
+        <th>Edit</th>
+    </tr>
+   {% for item in object_list %}
+        {% if not item.is_active %}
         <tr class="">
             <td class="">{{ item.get_full_name }}</td>
             <td class="">{{ item.username }}</td>

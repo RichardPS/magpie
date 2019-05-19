@@ -2,13 +2,12 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import formset_factory
-from django.forms import Textarea
+from django.forms import Textarea, ChoiceField
 from django.forms.widgets import TextInput
 
 # local
 from .models import Order
 from .models import Item
-
 
 class DateInput(TextInput):
     """ custom methios for date field """
@@ -65,3 +64,54 @@ class DeclineMessage(forms.Form):
 
 """ item formset """
 ItemFormSet = formset_factory(ItemForm, extra=1)
+
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'is_active',
+            'is_staff',
+            'email',
+            'groups'
+        ]
+        labels = {
+            'first_name': 'Forename',
+            'last_name': 'Surname',
+            'is_active': 'Active User',
+            'is_staff': 'Is Manager',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+
+
+class AddUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'is_active',
+            'is_staff',
+            'email',
+            'groups'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(AddUserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['username'].required = True
+        self.fields['email'].required = True
+        self.fields['groups'].required = True
+

@@ -186,6 +186,9 @@ section.nav a {
 nav .nav-item {
   margin: 10px;
 }
+.form-control {
+  font-size: 1.6rem;
+}
 
 @media(min-width: 1200px) {
   .container {

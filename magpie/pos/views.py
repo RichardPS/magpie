@@ -7,6 +7,7 @@ from django import forms
 from django.forms.models import modelform_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -17,10 +18,11 @@ from django.utils.decorators import method_decorator
 from .config import AUTH_OPTIONS
 from .config import STATUS_OPTIONS
 
+from .forms import AddUserForm
 from .forms import DeclineMessage
 from .forms import ItemFormSet
 from .forms import OrderForm
-# from .forms import UserEditForm
+from .forms import EditUserForm
 
 from .functions import accept_auth
 from .functions import auth_complete
@@ -254,21 +256,34 @@ class AuthOrder(DetailView):
 class UserManagement(ListView):
     model = User
     template_name = 'admin/user_management.html'
+    ordering = ['last_name', 'first_name']
 
     def get_context_data(self, **kwargs):
         context = super(UserManagement, self).get_context_data(**kwargs)
         context['page_name'] = 'User Management'
         return context
 
+
 @method_decorator(staff_member_required, name='dispatch')
 class EditUser(UpdateView):
     model = User
-    fields = [
-        'first_name',
-        'last_name',
-        'username',
-        'is_active',
-        'groups',
-        'is_staff'
-        ]
+    form_class = EditUserForm
     template_name_suffix = '_update_form'
+    success_url = '/user_management'
+
+    def get_context_data(self, **kwargs):
+        context = super(EditUser, self).get_context_data(**kwargs)
+        context['page_name'] = 'Edit User'
+        return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AddUser(CreateView):
+    model = User
+    form_class = AddUserForm
+    success_url = '/user_management'
+
+    def get_context_data(self, **kwargs):
+        context = super(AddUser, self).get_context_data(**kwargs)
+        context['page_name'] = 'Add User'
+        return context
