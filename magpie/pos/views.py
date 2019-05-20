@@ -1,6 +1,7 @@
 # 3rd party
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django import forms
@@ -101,7 +102,7 @@ def raise_pos(
             order_saved(_order.pk)
 
             """ redirect to order summary page """
-            return redirect('summary/' + str(_order.pk))
+            return redirect('/summary/' + str(_order.pk))
         else:
             """ no auth required render order page with info message """
             """ get empty forms """

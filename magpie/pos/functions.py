@@ -1,11 +1,11 @@
 # 3rd party
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 
 # local
 from .config import AUTH_RESPONSE
-from .config import GROUP_MANAGERS
-from .config import HOSTNAME
 from .config import MD_EMAIL
 from .config import STATUS_OPTIONS
 
@@ -25,11 +25,11 @@ def order_saved(pk):
     user_group = ""
     for group in groups:
         user_group = group
-    # print(user_group)
-    email_dict = GROUP_MANAGERS
-    manager_email = email_dict.get(str(user_group))
-    # print(manager_email)
 
+    group_manager = User.objects.get(
+        groups__name=str(user_group), is_staff=True)
+
+    manager_email = group_manager.email
     send_email(manager_email, 'dm', pk)
 
     """ get total value of order """
@@ -74,33 +74,30 @@ def auth_required(order_value):
     return auth_option
 
 
-def message_link(pk, auth):
-    link_url = '{0}/auth_order/?pk={1}&auth={2}'.format(HOSTNAME, pk, auth)
-    return link_url
-
-
-def complie_email(pk, auth):
-    """ compile email message """
-    message = 'Click here {0} to authorise order'.format(
-        message_link(pk, auth)
-        )
-
-    return message
-
-
 def send_email(email, auth, pk):
+    """ get order objects """
+    order = Order.objects.get(pk=pk)
+    order_items = Item.objects.all().filter(order__pk=pk)
+
+    """ get email templates """
+    msg_plain = render_to_string(
+        'pos_email.txt',
+        {'auth': auth, 'pk': pk, 'order': order, 'items': order_items})
+    msg_html = render_to_string(
+        'pos_email.html',
+        {'auth': auth, 'pk': pk, 'order': order, 'items': order_items})
+
     """ send email to recipent to accept of decline """
     subject = 'Auth Order'
-    message = complie_email(pk, auth)
     from_email = 'my@email.com'
     to_email = email
 
     send_mail(
         subject,
-        message,
+        msg_plain,
         from_email,
         [to_email],
-        fail_silently=False,
+        html_message=msg_html,
     )
 
 
@@ -140,7 +137,6 @@ def accept_auth(pk, auth):
             order.order_status = STATUS_OPTIONS[1][0]
 
     order.save()
-
     return
 
 
@@ -157,5 +153,4 @@ def decline_auth(pk, auth, message):
         order.order_status = STATUS_OPTIONS[2][0]
 
     order.save()
-
     return
