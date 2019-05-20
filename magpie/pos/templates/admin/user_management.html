@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block header %}
     {% include 'pos/nav.html' %}
@@ -100,3 +101,7 @@
    {% endfor %}
 </table>
 {% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/color.js' %}"></script>
+{% endblock scripts %}

@@ -30,7 +30,7 @@ def order_saved(pk):
         groups__name=str(user_group), is_staff=True)
 
     manager_email = group_manager.email
-    send_email(manager_email, 'dm', pk)
+    send_email(manager_email, 'dm', pk, order, order_items)
 
     """ get total value of order """
     grand_total = 0
@@ -38,7 +38,7 @@ def order_saved(pk):
         grand_total = grand_total + item.item_price * item.item_qty
     # print(grand_total)
     if grand_total > 2000:
-        send_email(MD_EMAIL, 'md', pk)
+        send_email(MD_EMAIL, 'md', pk, order, order_items)
 
 
 def order_variables(items):
@@ -74,11 +74,7 @@ def auth_required(order_value):
     return auth_option
 
 
-def send_email(email, auth, pk):
-    """ get order objects """
-    order = Order.objects.get(pk=pk)
-    order_items = Item.objects.all().filter(order__pk=pk)
-
+def send_email(email, auth, pk, order, order_items):
     """ get email templates """
     msg_plain = render_to_string(
         'pos_email.txt',
@@ -88,8 +84,9 @@ def send_email(email, auth, pk):
         {'auth': auth, 'pk': pk, 'order': order, 'items': order_items})
 
     """ send email to recipent to accept of decline """
-    subject = 'Auth Order'
-    from_email = 'my@email.com'
+    subject = 'Authorise {0} Order for {1}'.format(
+        order.company_name, order.ordered_by.get_full_name)
+    from_email = 'no-reply@primarysite.net'
     to_email = email
 
     send_mail(

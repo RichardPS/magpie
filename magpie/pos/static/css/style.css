@@ -40,6 +40,44 @@ body {
   font-size: 1.6em;
 }
 
+h1,
+.xxlarge {
+  font-size: 2.6rem;
+}
+
+h2,
+.xlarge {
+  font-size: 2.2rem;
+}
+
+h3,
+.large {
+  font-size: 2.0rem;
+}
+
+h4,
+.medium {
+  font-size: 1.6rem;
+}
+
+h5,
+.small {
+  font-size: 1.2rem;
+}
+
+h6,
+.xsmall {
+  font-size: 1.1rem;
+}
+
+.red {
+  color: #f00;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 footer {
   display: block;
   position: fixed;
@@ -173,6 +211,7 @@ ul.order-item-block li:last-child {
 ============= */
 .icon-font {
   font-family: 'icons';
+  font-size: 2rem;
 }
 
 /* BOOTSTRAP ORDERRIDES
