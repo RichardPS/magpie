@@ -1,0 +1,30 @@
+{% load order_extras %}
+
+Ordered By: {{ order.ordered_by.get_full_name }}
+Order Date: {{ order.date_ordered }}
+Expected Delivery: {{ order.delivery_date }}
+Reason: {{ order.reason }}
+
+Company Address
+{{ order.company_name }}
+{{ order.address_one }}
+{% if order.address_two %}
+    {{ order.address_two }}
+{% endif %}
+{{ order.city }}
+{{ order.county }}
+{{ order.post_code }}
+{{ order.telephone }}
+
+Order Items
+{% for item in order.item_set.all %}
+        {{ item.item_name }}
+        {{ item.item_qty }}
+        £{{ item.item_price }}
+{% endfor %}
+
+
+Order Total: £{% get_total order.item_set.all %}
+
+
+http://localhost:8000/auth_order/{{pk}}/{{auth}}

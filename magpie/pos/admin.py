@@ -1,8 +1,21 @@
+# 3rd party
 from django.contrib import admin
 
-# Register your models here.
+# local
 from .models import Order
 from .models import Item
+
+
+class ItemInline(admin.TabularInline):
+    model = Item
+    extra = 0
+    can_delete = False
+    show_change_link = True
+    readonly_fields = (
+        'item_name',
+        'item_qty',
+        'item_price',
+    )
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -28,6 +41,9 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = (
         'date_ordered',
     )
+    inlines = [
+        ItemInline,
+    ]
 
 
 class ItemAdmin(admin.ModelAdmin):

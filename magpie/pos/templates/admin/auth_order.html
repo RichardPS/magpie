@@ -1,14 +1,9 @@
 {% extends "base.html" %}
-{% load static order_extras %}
-
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'css/print.css' %}" type="text/css" media="print">
-{% endblock styles %}
+{% load order_extras %}
 
 {% block content %}
-    <div class="print-block">
-        <a href="#" id="print-button" onclick="window.print();return false;">A</a>
-    </div>
+
+    <h2>{{ page_name }}</h2>
 
     <ul class="ul_block">
         <li>Ordered By: {{ order.ordered_by.get_full_name }}</li>
@@ -42,13 +37,25 @@
     <ul class="order-item-block">
         <li>Order Total: £{% get_total order.item_set.all %}</li>
     </ul>
-    <br>
-    {% if order.decline_message %}
-        <p class="red bold">This Order has been Declined by:</p>
-        <p class="red bold">{{ order.decline_message }}</p>
+
+    {% if actioned %}
+        <p>You have already actioned this order</p>
+    {% else %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="accept">
+            <input type="submit" name="accept" value="Accept" class="btn btn-success">
+        </form>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="decline">
+            {{ form }}
+            <br>
+            <input type="submit" name="decline" value="Decline" class="decline-btn btn btn-danger">
+        </form>
     {% endif %}
-    <br>
-    <input class="back-link" type=button value="Previous Page" onClick="javascript:history.go(-1);">
 
 
 {% endblock %}

@@ -8,8 +8,10 @@ more to come...
 
 - [x] Basic Admin Area
 
-- [ ] User Registration
+- [ ] Futher Admin View Functionality
 
-- [ ] Page Permissions
+- [x] User Registration
+
+- [x] Page Permissions
 
 - [ ] More admin functionality

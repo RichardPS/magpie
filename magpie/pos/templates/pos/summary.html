@@ -1,40 +1,46 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static order_extras %}
 
 {% block content %}
-<h1>Order Summary</h1>
-    <ul>
-        <li>Company Name: {{ order_details.company_name }}</li>
-        <li>Address One: {{ order_details.address_one }}</li>
-        {% if order_details.address_two %}
-        <li>Address Two: {{ order_details.address_two }}</li>
+
+    <div class="print-block">
+        <a href="#" id="print-button" onclick="window.print();return false;">A</a>
+    </div>
+
+    <ul class="ul_block">
+        <li>Ordered By: {{ order.ordered_by.get_full_name }}</li>
+        <li>Order Date: {{ order.date_ordered }}</li>
+        <li>Expected Delivery: {{ order.delivery_date }}</li>
+        <li>Reason: {{ order.reason }}</li>
+    </ul>
+    <br>
+    <h2>Company Address</h2>
+    <ul class="ul_block">
+        <li>{{ order.company_name }}</li>
+        <li>{{ order.address_one }}</li>
+        {% if order.address_two %}
+            <li>{{ order.address_two }}</li>
         {% endif %}
-        <li>City: {{ order_details.city }}</li>
-        <li>County: {{ order_details.county }}</li>
-        <li>Postcode: {{ order_details.post_code }}</li>
-        <li>Telephone: {{ order_details.telephone }}</li>
-        <li>Reason for Order: {{ order_details.reason }}</li>
-        <li>Expected Delivery Date: {{ order_details.delivery_date }}</li>
+        <li>{{ order.city }}</li>
+        <li>{{ order.county }}</li>
+        <li>{{ order.post_code }}</li>
+        <li>{{ order.telephone }}</li>
+    </ul>
+    <br>
+    <h2>Order Items</h2>
+    {% for item in order.item_set.all %}
+        <ul class="order-item-block">
+                <li>{{ item.item_name }}</li>
+                <li>{{ item.item_qty }}</li>
+                <li>£{{ item.item_price }}</li>
+        </ul>
+    {% endfor %}
+
+    <ul class="order-item-block">
+        <li>Order Total: £{% get_total order.item_set.all %}</li>
     </ul>
 
-    <table border="1" cellspacing="0" cellpadding="5" width="100%">
-        <tr>
-            <th>Item Description</th>
-            <th>Quantity</th>
-            <th>Price</th>
-        </tr>
-    {% for item in item_details %}
-        <tr>
-            <td>{{ item.item_name }}</td>
-            <td>{{ item.item_qty }}</td>
-            <td>{{ item.item_price }}</td>
-        </tr>
-    {% endfor %}
-        <tr>
-            <td colspan="2">Total</td>
-            <td>{{ order_total }}</td>
-        </tr>
-    </table>
+    <a href="{% url 'index' %}">Close</a>
 
 {% endblock content %}
 

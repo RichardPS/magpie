@@ -4,14 +4,14 @@ See `requirements.txt` for additional package requirements
 
 `pip install -r devtools/requirements.txt`
 
-## startup
+## runfirst
 #### Required for app functionality
-Adds required auth groups
+Adds required groups
 
-`python manage.py devtools/run.py startup`
+`python manage.py devtools/run.py runfirst`
 
 ## dummydata
-#### For testing
+#### Adds data for testing
 Adds dummy users
 
 Adds dummy data

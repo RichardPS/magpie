@@ -1,16 +1,33 @@
+# 3rd party
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
+from django import forms
+from django.forms.models import modelform_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView
+from django.views.generic import DetailView
+from django.views.generic import ListView
+from django.views.generic import TemplateView
+from django.views.generic.edit import UpdateView
+from django.utils.decorators import method_decorator
 
-import pdb
-
+# local
 from .config import AUTH_OPTIONS
+from .config import STATUS_OPTIONS
 
+from .forms import AddUserForm
+from .forms import DeclineMessage
 from .forms import ItemFormSet
-from .forms import ItemForm
 from .forms import OrderForm
+from .forms import EditUserForm
 
+from .functions import accept_auth
+from .functions import auth_complete
+from .functions import decline_auth
 from .functions import order_saved
 from .functions import order_variables
 
@@ -18,12 +35,18 @@ from .models import Item
 from .models import Order
 
 
-# Create your views here.
-def index(
-        request,
-        template_name='pos/index.html',
-        page_name='POS System'):
+class Index(TemplateView):
+    template_name = 'pos/index.html'
 
+
+@login_required
+def raise_pos(
+        request,
+        template_name='pos/raise_pos.html',
+        page_name='Raise Purchase Order'):
+
+    """ purchase order form """
+    """ POST request - process order """
     if request.method == 'POST':
         """ get post data """
         order_form = OrderForm(request.POST)
@@ -79,7 +102,7 @@ def index(
             order_saved(_order.pk)
 
             """ redirect to order summary page """
-            return redirect('summary/' + str(_order.pk))
+            return redirect('/summary/' + str(_order.pk))
         else:
             """ no auth required render order page with info message """
             """ get empty forms """
@@ -103,6 +126,7 @@ def index(
             )
 
     else:
+        """ render blank order form """
         """ get empty forms """
         order_form = OrderForm()
         item_form_set = ItemFormSet()
@@ -125,18 +149,12 @@ def order_summary(
         pk,
         template_name='pos/summary.html',
         page_name='Order Summary'):
-
-    order_details = get_object_or_404(Order, pk=pk)
-    item_details = Item.objects.filter(order__pk=pk)
-    order_total = 0
-    for item in item_details:
-        order_total = order_total + item.item_price * item.item_qty
+    """ display summery of order """
+    order = get_object_or_404(Order, pk=pk)
 
     context = {
         'page_name': page_name,
-        'order_details': order_details,
-        'item_details': item_details,
-        'order_total': order_total
+        'order': order
     }
 
     return render(
@@ -146,11 +164,13 @@ def order_summary(
     )
 
 
+@method_decorator(staff_member_required, name='dispatch')
 class AdminOrders(ListView):
     model = Order
     template_name = 'admin/order_list.html'
     paginate_by = 10
 
+    """ admin area, view orders in each stage """
     def get_context_data(self, **kwargs):
         context = super(AdminOrders, self).get_context_data(**kwargs)
         context['page_name'] = self.kwargs['area'].capitalize()
@@ -161,14 +181,110 @@ class AdminOrders(ListView):
             order_status=self.kwargs['area'])
 
 
+@method_decorator(staff_member_required, name='dispatch')
 class AdminOrderDetails(DetailView):
     model = Order
     template_name = 'admin/order_details.html'
     pk_url_kwarg = 'pk'
 
+    """ admin view order details """
     def get_context_data(self, **kwargs):
         context = super(AdminOrderDetails, self).get_context_data(**kwargs)
-        context['items'] = Item.objects.filter(order=self.kwargs['pk'])
         context['page_name'] = 'Details for {0} order'.format(
             self.object.company_name)
+        return context
+
+
+def cancel_order(
+        request,
+        pk):
+
+    """ change order status to cenceled """
+    order_to_cancel = get_object_or_404(Order, pk=pk)
+    order_to_cancel.order_status = STATUS_OPTIONS[4][0]
+    order_to_cancel.save()
+
+    return redirect('/orders/canceled')
+
+
+def clear_order(
+        request,
+        pk):
+
+    """ change order status to cleared """
+    order_to_clear = get_object_or_404(Order, pk=pk)
+    order_to_clear.order_status = STATUS_OPTIONS[3][0]
+    order_to_clear.save()
+
+    return redirect('/orders/cleared')
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AuthOrder(DetailView):
+    model = Order
+    template_name = 'admin/auth_order.html'
+    pk_url_kwarg = 'pk'
+    form_class = DeclineMessage
+
+    """ page to accept/decline order """
+    def get_context_data(self, **kwargs):
+        context = super(AuthOrder, self).get_context_data(**kwargs)
+        context['page_name'] = 'Authorise order for {0}'.format(
+            self.object.company_name)
+        context['auth'] = self.kwargs['pk']
+        context['actioned'] = auth_complete(
+            self.kwargs['pk'],
+            self.kwargs['auth'])
+        context['form'] = DeclineMessage(initial={'post': self.object})
+        return context
+
+    """ process form post data """
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        pk = self.kwargs['pk']
+        auth = self.kwargs['auth']
+        action = request.POST.get('action')
+        if action == 'accept':
+            accept_auth(pk, auth)
+        else:
+            message = request.POST.get('decline_message')
+            decline_auth(pk, auth, message)
+
+        return HttpResponseRedirect(self.request.path_info)
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class UserManagement(ListView):
+    model = User
+    template_name = 'admin/user_management.html'
+    ordering = ['last_name', 'first_name']
+
+    def get_context_data(self, **kwargs):
+        context = super(UserManagement, self).get_context_data(**kwargs)
+        context['page_name'] = 'User Management'
+        return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class EditUser(UpdateView):
+    model = User
+    form_class = EditUserForm
+    template_name_suffix = '_update_form'
+    success_url = '/user_management'
+
+    def get_context_data(self, **kwargs):
+        context = super(EditUser, self).get_context_data(**kwargs)
+        context['page_name'] = 'Edit User'
+        return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AddUser(CreateView):
+    model = User
+    form_class = AddUserForm
+    success_url = '/user_management'
+
+    def get_context_data(self, **kwargs):
+        context = super(AddUser, self).get_context_data(**kwargs)
+        context['page_name'] = 'Add User'
         return context

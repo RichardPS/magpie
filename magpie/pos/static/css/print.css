@@ -1,0 +1,5 @@
+#admin-bar,
+.print-block,
+.back-link {
+    display: none;
+}

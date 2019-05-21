@@ -6,7 +6,7 @@ $(function(){
         var btnRemove = document.createElement('button');
         var btnText = document.createTextNode('Remove last item row');
         btnRemove.appendChild(btnText);
-        btnRemove.className = 'remove-row';
+        btnRemove.className = 'remove-row btn btn-warning';
         btnRemove.id = 'remove-row';
 
         document.getElementById('add-remove').appendChild(btnRemove);

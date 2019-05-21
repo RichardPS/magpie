@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<input class="back-link" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+<br>
+<br>
+    <form method="post">
+        {% csrf_token %}
+        <ul>
+            {% for item in form %}
+                <div class="form-group">
+                    <label>{{ item.label }}</label>
+                    {{ item }}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Add User">
+        </ul>
+    </form>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/user-name.js' %}"></script>
+{% endblock scripts %}

@@ -1,8 +1,9 @@
 """ status options """
 STATUS_OPTIONS = (
-    ('raised', 'Raised'),
     ('pending', 'Pending'),
-    ('complete', 'Complete'),
+    ('authorised', 'Authorised'),
+    ('declined', 'Declined'),
+    ('cleared', 'Cleared'),
     ('canceled', 'Canceled'),
 )
 
@@ -11,6 +12,14 @@ STATUS_OPTIONS = (
 AUTH_OPTIONS = (
     ('dm', 'Department Manager Only'),
     ('dmmd', 'Department Manager and Managing Director')
+)
+
+
+""" auth response """
+AUTH_RESPONSE = (
+    ('null', '-'),
+    ('accepted', 'Accepted'),
+    ('declined', 'Declined')
 )
 
 
@@ -25,3 +34,7 @@ GROUP_MANAGERS = {
 
 """ MD EMAIL """
 MD_EMAIL = "geoff.millington@primarysite.net"
+
+""" hostname """
+""" TESTING ONLY """
+HOSTNAME = 'localhost'
