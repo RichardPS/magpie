@@ -1,11 +1,11 @@
 # 3rd party
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 
 # local
 from .config import AUTH_RESPONSE
-from .config import GROUP_MANAGERS
-from .config import HOSTNAME
 from .config import MD_EMAIL
 from .config import STATUS_OPTIONS
 
@@ -25,12 +25,12 @@ def order_saved(pk):
     user_group = ""
     for group in groups:
         user_group = group
-    # print(user_group)
-    email_dict = GROUP_MANAGERS
-    manager_email = email_dict.get(str(user_group))
-    # print(manager_email)
 
-    send_email(manager_email, 'dm', pk)
+    group_manager = User.objects.get(
+        groups__name=str(user_group), is_staff=True)
+
+    manager_email = group_manager.email
+    send_email(manager_email, 'dm', pk, order, order_items)
 
     """ get total value of order """
     grand_total = 0
@@ -38,7 +38,7 @@ def order_saved(pk):
         grand_total = grand_total + item.item_price * item.item_qty
     # print(grand_total)
     if grand_total > 2000:
-        send_email(MD_EMAIL, 'md', pk)
+        send_email(MD_EMAIL, 'md', pk, order, order_items)
 
 
 def order_variables(items):
@@ -74,33 +74,27 @@ def auth_required(order_value):
     return auth_option
 
 
-def message_link(pk, auth):
-    link_url = '{0}/auth_order/?pk={1}&auth={2}'.format(HOSTNAME, pk, auth)
-    return link_url
+def send_email(email, auth, pk, order, order_items):
+    """ get email templates """
+    msg_plain = render_to_string(
+        'pos_email.txt',
+        {'auth': auth, 'pk': pk, 'order': order, 'items': order_items})
+    msg_html = render_to_string(
+        'pos_email.html',
+        {'auth': auth, 'pk': pk, 'order': order, 'items': order_items})
 
-
-def complie_email(pk, auth):
-    """ compile email message """
-    message = 'Click here {0} to authorise order'.format(
-        message_link(pk, auth)
-        )
-
-    return message
-
-
-def send_email(email, auth, pk):
     """ send email to recipent to accept of decline """
-    subject = 'Auth Order'
-    message = complie_email(pk, auth)
-    from_email = 'my@email.com'
+    subject = 'Authorise {0} Order for {1}'.format(
+        order.company_name, order.ordered_by.get_full_name)
+    from_email = 'no-reply@primarysite.net'
     to_email = email
 
     send_mail(
         subject,
-        message,
+        msg_plain,
         from_email,
         [to_email],
-        fail_silently=False,
+        html_message=msg_html,
     )
 
 
@@ -140,7 +134,6 @@ def accept_auth(pk, auth):
             order.order_status = STATUS_OPTIONS[1][0]
 
     order.save()
-
     return
 
 
@@ -157,5 +150,4 @@ def decline_auth(pk, auth, message):
         order.order_status = STATUS_OPTIONS[2][0]
 
     order.save()
-
     return

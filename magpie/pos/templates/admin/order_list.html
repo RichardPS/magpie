@@ -5,6 +5,10 @@
     <title>Orders {{ page_name }}</title>
 {% endblock title %}
 
+{% block header %}
+    {% include 'pos/nav.html' %}
+{% endblock header %}
+
 {% block nav %}
     <a class="nav-item nav-link btn-primary" href="/orders/pending">Pending</a>
     <a class="nav-item nav-link btn-primary" href="/orders/authorised">Authorised</a>
