@@ -1,16 +1,18 @@
-# 3rd party
+# Django
 from django import forms
-from django.contrib.auth.models import User
 from django.forms import formset_factory
 from django.forms import Textarea, ChoiceField
 from django.forms.widgets import TextInput
 
-# local
+# Local
 from .models import Order
 from .models import Item
 
+from accounts.models import User
+
+
 class DateInput(TextInput):
-    """ custom methios for date field """
+    """ custom method for date field """
     input_type = 'date'
 
 
@@ -70,13 +72,13 @@ class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            'username',
             'first_name',
             'last_name',
-            'is_active',
-            'is_staff',
+            'username',
             'email',
-            'groups'
+            'department',
+            'is_active',
+            'is_manager'
         ]
         labels = {
             'first_name': 'Forename',
@@ -91,6 +93,12 @@ class EditUserForm(forms.ModelForm):
         self.fields['first_name'].widget.attrs['class'] = 'form-control'
         self.fields['last_name'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['username'].required = True
+        self.fields['email'].required = True
+        self.fields['department'].required = True
 
 
 class AddUserForm(forms.ModelForm):
@@ -101,9 +109,9 @@ class AddUserForm(forms.ModelForm):
             'last_name',
             'username',
             'is_active',
-            'is_staff',
+            'department',
             'email',
-            'groups'
+            'is_manager'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -113,5 +121,5 @@ class AddUserForm(forms.ModelForm):
         self.fields['last_name'].required = True
         self.fields['username'].required = True
         self.fields['email'].required = True
-        self.fields['groups'].required = True
+        self.fields['department'].required = True
 

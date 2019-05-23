@@ -1,8 +1,7 @@
-# 3rd party
+# Django
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django import forms
 from django.forms.models import modelform_factory
@@ -15,7 +14,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 
-# local
+# Local
 from .config import AUTH_OPTIONS
 from .config import STATUS_OPTIONS
 
@@ -28,11 +27,14 @@ from .forms import EditUserForm
 from .functions import accept_auth
 from .functions import auth_complete
 from .functions import decline_auth
+from .functions import get_order_value
+from .functions import get_auth_required
 from .functions import order_saved
-from .functions import order_variables
 
 from .models import Item
 from .models import Order
+
+from accounts.models import User
 
 
 class Index(TemplateView):
@@ -52,13 +54,32 @@ def raise_pos(
         order_form = OrderForm(request.POST)
         item_form_set = ItemFormSet(request.POST)
         """ get order variables - order total and if auth if required """
-        if item_form_set.is_valid():
-            """ get auth required and op total """
-            pos_required = order_variables(item_form_set)
-            """ get auth required or reject order request """
-            if pos_required['order_total'] >= 200:
+        if order_form.is_valid() & item_form_set.is_valid():
+            """ check order value """
+            if get_order_value(item_form_set):
                 """ auth required """
-                auth_required = pos_required['auth_option']
+                auth_required = get_auth_required(item_form_set)
+                _order = order_form.save(commit=False)
+                _order.ordered_by = request.user
+                _order.auth_required = AUTH_OPTIONS[auth_required][0]
+                _order.save()
+
+                """ get pk for order for ForeignKey assignment """
+                order_object = get_object_or_404(Order, pk=_order.pk)
+
+                """ process order items """
+                for item in item_form_set:
+                    if item.is_valid():
+                        _item = item.save(commit=False)
+                        _item.order = order_object
+                        _item.save()
+
+                """ send auth email required and redirect """
+                order_saved(_order.pk)
+
+                """ redirect to order summary page """
+                return redirect('/summary/' + str(_order.pk))
+
             else:
                 """ no auth required render order page with info message """
                 """ get empty forms """
@@ -67,7 +88,7 @@ def raise_pos(
                 """ set message """
                 messages.info(
                     request,
-                    'No Purchase Order Required for orders under £200')
+                    'No Purchase Order required for orders under £200')
 
                 context = {
                     'item_form_set': item_form_set,
@@ -81,28 +102,6 @@ def raise_pos(
                     context,
                 )
 
-        """ process order """
-        if order_form.is_valid() & item_form_set.is_valid():
-            _order = order_form.save(commit=False)
-            _order.ordered_by = request.user
-            _order.auth_required = AUTH_OPTIONS[auth_required][0]
-            _order.save()
-
-            """ get pk for order for ForeignKey assignment """
-            order_object = get_object_or_404(Order, pk=_order.pk)
-
-            """ process order items """
-            for item in item_form_set:
-                if item.is_valid():
-                    _item = item.save(commit=False)
-                    _item.order = order_object
-                    _item.save()
-
-            """ send email to required auth persons, move to summary view?"""
-            order_saved(_order.pk)
-
-            """ redirect to order summary page """
-            return redirect('/summary/' + str(_order.pk))
         else:
             """ no auth required render order page with info message """
             """ get empty forms """

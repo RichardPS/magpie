@@ -1,8 +1,8 @@
-# 3rd party
+# Django
 from django.conf import settings
 from django.db import models
 
-# local
+# Local
 from .config import AUTH_OPTIONS
 from .config import AUTH_RESPONSE
 from .config import STATUS_OPTIONS

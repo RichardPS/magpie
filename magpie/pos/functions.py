@@ -1,10 +1,11 @@
-# 3rd party
-from django.contrib.auth.models import User
+# Django
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 
 # local
+from accounts.models import User
+
 from .config import AUTH_RESPONSE
 from .config import MD_EMAIL
 from .config import STATUS_OPTIONS
@@ -21,47 +22,47 @@ def order_saved(pk):
 
     """ get user object that placed the order and their group """
     user = order.ordered_by
-    groups = user.groups.all()
-    user_group = ""
-    for group in groups:
-        user_group = group
+    department = user.department
 
-    group_manager = User.objects.get(
-        groups__name=str(user_group), is_staff=True)
+    department_manager = User.objects.get(
+        department=department,
+        is_manager=True)
 
-    manager_email = group_manager.email
-    send_email(manager_email, 'dm', pk, order, order_items)
+    department_manager_email = department_manager.email
+    send_email(department_manager_email, 'dm', pk, order, order_items)
 
     """ get total value of order """
-    grand_total = 0
-    for item in order_items:
-        grand_total = grand_total + item.item_price * item.item_qty
-    # print(grand_total)
-    if grand_total > 2000:
+    if get_order_total(order_items) > 2000:
         send_email(MD_EMAIL, 'md', pk, order, order_items)
 
 
-def order_variables(items):
-    """ calculate and return order value from item set """
+def get_order_value(items):
     order_total = 0
-    items = items
     for item in items:
         cd = item.cleaned_data
         _price = cd.get('item_price')
         _qty = cd.get('item_qty')
         order_total = order_total + _price * _qty
-
-    auth_option = auth_required(order_total)
-    order = {
-        'order_total': order_total,
-        'auth_option': auth_option,
-    }
-
-    return order
+    if order_total >= 200:
+        return True
+    else:
+        return False
 
 
-def auth_required(order_value):
-    """ get authorision requied """
+def get_order_total(items):
+    order_total = 0
+    for item in items:
+        cd = item.cleaned_data
+        _price = cd.get('item_price')
+        _qty = cd.get('item_qty')
+        order_total = order_total + _price * _qty
+    return order_total
+
+
+def get_auth_required(items):
+    """ get total value of order """
+    order_value = get_order_total(items)
+    """ get authorisation required """
     if order_value < 200:
         """ no PO required """
         auth_option = 'none'
@@ -85,7 +86,8 @@ def send_email(email, auth, pk, order, order_items):
 
     """ send email to recipent to accept of decline """
     subject = 'Authorise {0} Order for {1}'.format(
-        order.company_name, order.ordered_by.get_full_name)
+        order.company_name,
+        order.ordered_by.get_full_name)
     from_email = 'no-reply@primarysite.net'
     to_email = email
 
