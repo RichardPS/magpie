@@ -8,10 +8,14 @@ more to come...
 
 - [x] Basic Admin Area
 
-- [ ] Futher Admin View Functionality
+- [x] Further Admin View Functionality
 
 - [x] User Registration
 
 - [x] Page Permissions
+
+- [x] Refactor User to AbstractUser
+
+- [x] Refactor Page Permissions using extended user fields
 
 - [ ] More admin functionality
