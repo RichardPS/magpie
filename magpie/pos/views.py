@@ -1,6 +1,7 @@
 # Django
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django import forms
@@ -15,6 +16,8 @@ from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 
 # Local
+from accounts.models import User
+
 from .config import AUTH_OPTIONS
 from .config import STATUS_OPTIONS
 
@@ -27,14 +30,16 @@ from .forms import EditUserForm
 from .functions import accept_auth
 from .functions import auth_complete
 from .functions import decline_auth
-from .functions import get_order_value
+from .functions import check_order_value
 from .functions import get_auth_required
 from .functions import order_saved
 
 from .models import Item
 from .models import Order
 
-from accounts.models import User
+from .user_tests import active_aa__su
+from .user_tests import active_md_dm_su
+from .user_tests import active_staff_su
 
 
 class Index(TemplateView):
@@ -56,7 +61,7 @@ def raise_pos(
         """ get order variables - order total and if auth if required """
         if order_form.is_valid() & item_form_set.is_valid():
             """ check order value """
-            if get_order_value(item_form_set):
+            if check_order_value(item_form_set):
                 """ auth required """
                 auth_required = get_auth_required(item_form_set)
                 _order = order_form.save(commit=False)
@@ -143,28 +148,18 @@ def raise_pos(
         )
 
 
-def order_summary(
-        request,
-        pk,
-        template_name='pos/summary.html',
-        page_name='Order Summary'):
-    """ display summery of order """
-    order = get_object_or_404(Order, pk=pk)
+class OrderSummary(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'pos/summary.html'
 
-    context = {
-        'page_name': page_name,
-        'order': order
-    }
-
-    return render(
-        request,
-        template_name,
-        context,
-    )
+    def get_context_data(self, **kwargs):
+        context = super(OrderSummary, self).get_context_data(**kwargs)
+        context['page_name'] = 'Summary of order for {0}'.format(
+            self.object.company_name)
+        return context
 
 
-@method_decorator(staff_member_required, name='dispatch')
-class AdminOrders(ListView):
+class AdminOrders(UserPassesTestMixin, ListView):
     model = Order
     template_name = 'admin/order_list.html'
     paginate_by = 10
@@ -179,9 +174,15 @@ class AdminOrders(ListView):
         return super(AdminOrders, self).get_queryset().filter(
             order_status=self.kwargs['area'])
 
+    def test_func(self):
+        return active_aa__su(self.request.user)
 
-@method_decorator(staff_member_required, name='dispatch')
-class AdminOrderDetails(DetailView):
+    def handle_no_permission(self):
+        messages.error(self.request, 'No Access Permissions')
+        return redirect('index')
+
+
+class AdminOrderDetails(UserPassesTestMixin, DetailView):
     model = Order
     template_name = 'admin/order_details.html'
     pk_url_kwarg = 'pk'
@@ -192,6 +193,13 @@ class AdminOrderDetails(DetailView):
         context['page_name'] = 'Details for {0} order'.format(
             self.object.company_name)
         return context
+
+    def test_func(self):
+        return active_aa__su(self.request.user)
+
+    def handle_no_permission(self):
+        messages.error(self.request, 'No Access Permissions')
+        return redirect('index')
 
 
 def cancel_order(
@@ -218,8 +226,7 @@ def clear_order(
     return redirect('/orders/cleared')
 
 
-@method_decorator(staff_member_required, name='dispatch')
-class AuthOrder(DetailView):
+class AuthOrder(UserPassesTestMixin, DetailView):
     model = Order
     template_name = 'admin/auth_order.html'
     pk_url_kwarg = 'pk'
@@ -251,9 +258,15 @@ class AuthOrder(DetailView):
 
         return HttpResponseRedirect(self.request.path_info)
 
+    def test_func(self):
+        return active_md_dm_su( self.request.user)
 
-@method_decorator(staff_member_required, name='dispatch')
-class UserManagement(ListView):
+    def handle_no_permission(self):
+        messages.error(self.request, 'No Access Permissions')
+        return redirect('index')
+
+
+class UserManagement(UserPassesTestMixin, ListView):
     model = User
     template_name = 'admin/user_management.html'
     ordering = ['last_name', 'first_name']
@@ -263,9 +276,15 @@ class UserManagement(ListView):
         context['page_name'] = 'User Management'
         return context
 
+    def test_func(self):
+        return active_staff_su(self.request.user)
 
-@method_decorator(staff_member_required, name='dispatch')
-class EditUser(UpdateView):
+    def handle_no_permission(self):
+        messages.error(self.request, 'No Access Permissions')
+        return redirect('index')
+
+
+class EditUser(UserPassesTestMixin, UpdateView):
     model = User
     form_class = EditUserForm
     template_name_suffix = '_update_form'
@@ -276,9 +295,15 @@ class EditUser(UpdateView):
         context['page_name'] = 'Edit User'
         return context
 
+    def test_func(self):
+        return active_staff_su(self.request.user)
 
-@method_decorator(staff_member_required, name='dispatch')
-class AddUser(CreateView):
+    def handle_no_permission(self):
+        messages.error(self.request, 'No Access Permissions')
+        return redirect('index')
+
+
+class AddUser(UserPassesTestMixin, CreateView):
     model = User
     form_class = AddUserForm
     success_url = '/user_management'
@@ -287,3 +312,10 @@ class AddUser(CreateView):
         context = super(AddUser, self).get_context_data(**kwargs)
         context['page_name'] = 'Add User'
         return context
+
+    def test_func(self):
+        return active_staff_su(self.request.user)
+
+    def handle_no_permission(self):
+        messages.error(self.request, 'No Access Permissions')
+        return redirect('index')

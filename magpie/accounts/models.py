@@ -21,6 +21,10 @@ class User(AbstractUser):
         default=False,
         verbose_name='Is Director',
     )
+    is_accounts_admin = models.BooleanField(
+        default=False,
+        verbose_name='Is Accounts Administrator'
+    )
 
     @property
     def get_full_name(self):

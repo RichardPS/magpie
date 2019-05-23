@@ -12,7 +12,12 @@ class AuthUserAdmin(UserAdmin):
         'username', 'email', 'first_name', 'last_name', 'is_active'
     )
     fieldsets = UserAdmin.fieldsets + (
-        ('Extras', {'fields': ('department', 'is_manager', 'is_director')}),
+        ('Extras', {'fields': (
+            'department',
+            'is_manager',
+            'is_director',
+            'is_accounts_admin'
+        )}),
     )
 
 

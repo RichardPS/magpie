@@ -9,12 +9,13 @@ from .views import AdminOrderDetails
 from .views import AdminOrders
 from .views import EditUser
 from .views import Index
+from .views import OrderSummary
 from .views import UserManagement
 
 urlpatterns = [
     path('', Index.as_view(), name='index'),
     path('raise_pos/', views.raise_pos, name='raise_pos'),
-    path('summary/<int:pk>', views.order_summary, name='order_summary'),
+    path('summary/<int:pk>', OrderSummary.as_view(), name='order_summary'),
     path('cancel_order/<int:pk>', views.cancel_order, name='cancel_order'),
     path('clear_order/<int:pk>', views.clear_order, name='clear_order'),
     path('auth_order/<int:pk>/<slug:auth>/', views.AuthOrder.as_view()),
@@ -22,7 +23,7 @@ urlpatterns = [
     path('order_details/<int:pk>', AdminOrderDetails.as_view()),
     path('user_management', UserManagement.as_view(), name='user_management'),
     path('edit_user/<int:pk>', EditUser.as_view()),
-    path('add_user', AddUser.as_view()),
+    path('add_user/', AddUser.as_view()),
     path('login/', auth_views.LoginView.as_view(),
          {'template_name': 'login.html'}, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),

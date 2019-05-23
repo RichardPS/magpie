@@ -36,7 +36,7 @@ def order_saved(pk):
         send_email(MD_EMAIL, 'md', pk, order, order_items)
 
 
-def get_order_value(items):
+def check_order_value(items):
     order_total = 0
     for item in items:
         cd = item.cleaned_data
