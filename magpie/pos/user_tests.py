@@ -1,7 +1,7 @@
 """
 UserPassesTestMixin Tests
 """
-def active_aa__su(_user):
+def active_aa_su(_user):
     """
     Test if user is:
     Is Active

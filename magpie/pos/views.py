@@ -37,7 +37,7 @@ from .functions import order_saved
 from .models import Item
 from .models import Order
 
-from .user_tests import active_aa__su
+from .user_tests import active_aa_su
 from .user_tests import active_md_dm_su
 from .user_tests import active_staff_su
 
@@ -175,7 +175,7 @@ class AdminOrders(UserPassesTestMixin, ListView):
             order_status=self.kwargs['area'])
 
     def test_func(self):
-        return active_aa__su(self.request.user)
+        return active_aa_su(self.request.user)
 
     def handle_no_permission(self):
         messages.error(self.request, 'No Access Permissions')
@@ -195,7 +195,7 @@ class AdminOrderDetails(UserPassesTestMixin, DetailView):
         return context
 
     def test_func(self):
-        return active_aa__su(self.request.user)
+        return active_aa_su(self.request.user)
 
     def handle_no_permission(self):
         messages.error(self.request, 'No Access Permissions')
