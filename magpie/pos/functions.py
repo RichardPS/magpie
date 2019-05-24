@@ -20,7 +20,7 @@ def order_saved(pk):
     order_items = Item.objects.all().filter(order__pk=pk)
     order = Order.objects.get(pk=pk)
 
-    """ get user object that placed the order and their group """
+    """ get user object that placed the order and their department """
     user = order.ordered_by
     department = user.department
 
@@ -84,7 +84,7 @@ def send_email(email, auth, pk, order, order_items):
         'pos_email.html',
         {'auth': auth, 'pk': pk, 'order': order, 'items': order_items})
 
-    """ send email to recipent to accept of decline """
+    """ send email to recipient to accept of decline """
     subject = 'Authorise {0} Order for {1}'.format(
         order.company_name,
         order.ordered_by.get_full_name)

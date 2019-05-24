@@ -49,12 +49,12 @@
                     <td>{{ order.get_auth_required_display }}</td>
                     <td>{{ order.get_dm_auth_display }}</td>
                     <td>{{ order.get_md_auth_display }}</td>
-                    <td><a href="/order_details/{{ order.pk }}">View Details</a></td>
+                    <td><a href="/order_details/{{ order.pk }}" class="btn btn-primary">View Details</a></td>
                     {% if page_name == 'Authorised' %}
-                        <td><a href="/clear_order/{{ order.pk }}">Clear Order</a></td>
+                        <td><a href="/clear_order/{{ order.pk }}" class="btn btn-warning">Clear Order</a></td>
                     {% endif %}
                     {% if page_name != 'Canceled' %}
-                        <td><a href="/cancel_order/{{ order.pk }}">Cancel Order</a></td>
+                        <td><a href="/cancel_order/{{ order.pk }}" class="btn btn-danger">Cancel Order</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}

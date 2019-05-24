@@ -31,7 +31,7 @@
             <td class="">{{ item.username }}</td>
             <td class="">{{ item.email }}</td>
             <td class="icon-font">{{ item.is_active|make_list|first }}</td>
-            <td class="icon-font">{{ item.is_staff|make_list|first }}</td>
+            <td class="icon-font">{{ item.is_manager|make_list|first }}</td>
             <td class="">{{ item.get_department_display }}</td>
             <td class="">{{ item.last_login }}</td>
             <td class="">{{ item.date_joined }}</td>
@@ -61,7 +61,7 @@
             <td class="">{{ item.username }}</td>
             <td class="">{{ item.email }}</td>
             <td class="icon-font">{{ item.is_active|make_list|first }}</td>
-            <td class="icon-font">{{ item.is_staff|make_list|first }}</td>
+            <td class="icon-font">{{ item.is_manager|make_list|first }}</td>
             <td class="">{{ item.get_department_display }}</td>
             <td class="">{{ item.last_login }}</td>
             <td class="">{{ item.date_joined }}</td>
@@ -91,7 +91,7 @@
             <td class="">{{ item.username }}</td>
             <td class="">{{ item.email }}</td>
             <td class="icon-font">{{ item.is_active|make_list|first }}</td>
-            <td class="icon-font">{{ item.is_staff|make_list|first }}</td>
+            <td class="icon-font">{{ item.is_manager|make_list|first }}</td>
             <td class="">{{ item.get_department_display }}</td>
             <td class="">{{ item.last_login }}</td>
             <td class="">{{ item.date_joined }}</td>

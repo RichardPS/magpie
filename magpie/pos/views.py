@@ -23,14 +23,14 @@ from .config import STATUS_OPTIONS
 
 from .forms import AddUserForm
 from .forms import DeclineMessage
+from .forms import EditUserForm
 from .forms import ItemFormSet
 from .forms import OrderForm
-from .forms import EditUserForm
 
 from .functions import accept_auth
 from .functions import auth_complete
-from .functions import decline_auth
 from .functions import check_order_value
+from .functions import decline_auth
 from .functions import get_auth_required
 from .functions import order_saved
 
@@ -45,6 +45,12 @@ from .user_tests import active_staff_su
 class Index(TemplateView):
     template_name = 'pos/index.html'
 
+    """ admin view order details """
+    def get_context_data(self, **kwargs):
+        context = super(Index, self).get_context_data(**kwargs)
+        context['page_name'] = 'PrimarySite Purchase Order System'
+        return context
+
 
 @login_required
 def raise_pos(
@@ -58,8 +64,10 @@ def raise_pos(
         """ get post data """
         order_form = OrderForm(request.POST)
         item_form_set = ItemFormSet(request.POST)
+
         """ get order variables - order total and if auth if required """
         if order_form.is_valid() & item_form_set.is_valid():
+
             """ check order value """
             if check_order_value(item_form_set):
                 """ auth required """
@@ -68,7 +76,6 @@ def raise_pos(
                 _order.ordered_by = request.user
                 _order.auth_required = AUTH_OPTIONS[auth_required][0]
                 _order.save()
-
                 """ get pk for order for ForeignKey assignment """
                 order_object = get_object_or_404(Order, pk=_order.pk)
 
@@ -78,10 +85,8 @@ def raise_pos(
                         _item = item.save(commit=False)
                         _item.order = order_object
                         _item.save()
-
                 """ send auth email required and redirect """
                 order_saved(_order.pk)
-
                 """ redirect to order summary page """
                 return redirect('/summary/' + str(_order.pk))
 
@@ -94,18 +99,12 @@ def raise_pos(
                 messages.info(
                     request,
                     'No Purchase Order required for orders under £200')
-
                 context = {
                     'item_form_set': item_form_set,
                     'order_form': order_form,
                     'page_name': page_name,
                 }
-
-                return render(
-                    request,
-                    template_name,
-                    context,
-                )
+                return render(request, template_name, context,)
 
         else:
             """ no auth required render order page with info message """
@@ -113,39 +112,25 @@ def raise_pos(
             order_form = OrderForm()
             item_form_set = ItemFormSet()
             """ set message """
-            messages.error(
-                request,
-                'Error in data')
-
+            messages.error(request, 'Error in data')
             context = {
                 'item_form_set': item_form_set,
                 'order_form': order_form,
                 'page_name': page_name,
             }
-
-            return render(
-                request,
-                template_name,
-                context,
-            )
+            return render(request, template_name, context,)
 
     else:
         """ render blank order form """
         """ get empty forms """
         order_form = OrderForm()
         item_form_set = ItemFormSet()
-
         context = {
             'item_form_set': item_form_set,
             'order_form': order_form,
             'page_name': page_name,
         }
-
-        return render(
-            request,
-            template_name,
-            context,
-        )
+        return render(request, template_name, context,)
 
 
 class OrderSummary(LoginRequiredMixin, DetailView):
@@ -202,27 +187,19 @@ class AdminOrderDetails(UserPassesTestMixin, DetailView):
         return redirect('index')
 
 
-def cancel_order(
-        request,
-        pk):
-
-    """ change order status to cenceled """
+def cancel_order(request, pk):
+    """ change order status to canceled """
     order_to_cancel = get_object_or_404(Order, pk=pk)
     order_to_cancel.order_status = STATUS_OPTIONS[4][0]
     order_to_cancel.save()
-
     return redirect('/orders/canceled')
 
 
-def clear_order(
-        request,
-        pk):
-
+def clear_order(request, pk):
     """ change order status to cleared """
     order_to_clear = get_object_or_404(Order, pk=pk)
     order_to_clear.order_status = STATUS_OPTIONS[3][0]
     order_to_clear.save()
-
     return redirect('/orders/cleared')
 
 

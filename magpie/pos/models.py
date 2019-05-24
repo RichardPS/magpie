@@ -46,6 +46,9 @@ class Order(models.Model):
     )
     decline_message = models.CharField(max_length=255, blank=True)
 
+    class Meta:
+        ordering = ['date_ordered']
+
     def __str__(self):
         return '{0}'.format(self.company_name)
 
