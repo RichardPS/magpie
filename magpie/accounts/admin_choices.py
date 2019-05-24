@@ -1,6 +1,6 @@
 DEPARTMENTS = [
-    ('PR', 'Production'),
-    ('SA', 'Sales & Marketing'),
-    ('TE', 'Technical'),
-    ('FI', 'Finance')
+    ("PR", "Production"),
+    ("SA", "Sales & Marketing"),
+    ("TE", "Technical"),
+    ("FI", "Finance"),
 ]
