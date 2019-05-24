@@ -1,6 +1,6 @@
 # Django
 from django import forms
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 from django.forms import Textarea
 from django.forms.widgets import TextInput
 
@@ -66,6 +66,7 @@ class DeclineMessage(forms.Form):
 
 """ item formset """
 ItemFormSet = formset_factory(ItemForm, extra=1)
+# InlineItemFormSet = inlineformset_factory(Order, Item, form=ItemForm, extra=1, can_delete=False)
 
 
 class EditUserForm(forms.ModelForm):
