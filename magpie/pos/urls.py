@@ -12,11 +12,8 @@ from .views import Index
 from .views import OrderSummary
 from .views import UserManagement
 
-from .views import RaisePos
-
 urlpatterns = [
     path("", Index.as_view(), name="index"),
-    # path("raise_order/", RaisePos.as_view(), name="raise_order"),
     path("raise_pos/", views.raise_pos, name="raise_pos"),
     path("summary/<int:pk>", OrderSummary.as_view(), name="order_summary"),
     path("cancel_order/<int:pk>", views.cancel_order, name="cancel_order"),

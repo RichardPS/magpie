@@ -22,8 +22,6 @@ from .forms import EditUserForm
 from .forms import ItemFormSet
 from .forms import OrderForm
 
-# from .forms import InlineItemFormSet """ for order CreateView (not working) """
-
 from .functions import accept_auth
 from .functions import auth_complete
 from .functions import check_order_value
@@ -49,34 +47,6 @@ class Index(TemplateView):
         return context
 
 
-class RaisePos(CreateView):
-    """ Grrr, not working """
-    template_name = "pos/raise_pos.html"
-    model = Order
-    form_class = OrderForm
-
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        order_form = self.get_form_class()
-        item_form_set = InlineItemFormSet()
-        return self.render_to_response(
-            self.get_context_data(order_form=order_form,
-                                  item_form_set=item_form_set)
-        )
-
-    def form_valid(self, form):
-        form = self.get_form_class()
-        item_form_set = InlineItemFormSet(self.request.POST)
-        import pdb; pdb.set_trace()
-        if form.is_vaild() and item_form_set.is_valid():
-            form.instance.ordered_by = self.request.user
-            form.instance.auth_required = AUTH_OPTIONS[0][0]
-            self.object = form.save()
-            item_form_set.instance = self.object
-            item_form_set.save()
-        return redirect('index')
-
-
 @login_required
 def raise_pos(
     request, template_name="pos/raise_pos.html", page_name="Raise Purchase Order"
@@ -91,11 +61,11 @@ def raise_pos(
 
         """ get order variables - order total and if auth if required """
         if order_form.is_valid() & item_form_set.is_valid():
-
+            order_total = check_order_value(item_form_set)
             """ check order value """
-            if check_order_value(item_form_set):
+            if order_total >= 200:
                 """ auth required """
-                auth_required = get_auth_required(item_form_set)
+                auth_required = get_auth_required(order_total)
                 _order = order_form.save(commit=False)
                 _order.ordered_by = request.user
                 _order.auth_required = AUTH_OPTIONS[auth_required][0]

@@ -66,7 +66,6 @@ class DeclineMessage(forms.Form):
 
 """ item formset """
 ItemFormSet = formset_factory(ItemForm, extra=1)
-# InlineItemFormSet = inlineformset_factory(Order, Item, form=ItemForm, extra=1, can_delete=False)
 
 
 class EditUserForm(forms.ModelForm):

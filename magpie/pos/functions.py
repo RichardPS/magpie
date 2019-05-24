@@ -31,40 +31,35 @@ def order_saved(pk):
 
     """ get total value of order """
     if get_order_total(order_items) > 2000:
-        send_email(MD_EMAIL, "md", pk, order, order_items)
+        md_user = get_object_or_404(User, is_director=True)
+        md_email = md_user.email
+        send_email(md_email, "md", pk, order, order_items)
 
 
 def check_order_value(items):
     order_total = 0
     for item in items:
-        cd = item.cleaned_data
-        _price = cd.get("item_price")
-        _qty = cd.get("item_qty")
+        _price = float(item["item_price"].value())
+        _qty = int(item["item_qty"].value())
         order_total = order_total + _price * _qty
-    if order_total >= 200:
-        return True
-    else:
-        return False
+    return order_total
 
 
 def get_order_total(items):
     order_total = 0
     for item in items:
-        cd = item.cleaned_data
-        _price = cd.get("item_price")
-        _qty = cd.get("item_qty")
+        _price = item.item_price
+        _qty = item.item_qty
         order_total = order_total + _price * _qty
     return order_total
 
 
-def get_auth_required(items):
-    """ get total value of order """
-    order_value = get_order_total(items)
+def get_auth_required(order_total):
     """ get authorisation required """
-    if order_value < 200:
+    if order_total < 200:
         """ no PO required """
         auth_option = "none"
-    elif order_value < 2000:
+    elif order_total < 2000:
         """ manager auth required """
         auth_option = 0
     else:
