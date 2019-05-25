@@ -11,15 +11,6 @@ LOCATION = os.path.dirname(os.path.abspath(__file__))
 __version__ = '1.0'
 
 
-def _make_group_migrations():
-    """ load group data """
-    cmd = python[
-        'manage.py',
-        'loaddata',
-        '{0}/group.json'.format(LOCATION)]
-    cmd.run_fg()
-
-
 def _user_loaddata():
     """ load dummy users """
     cmd = python[
@@ -34,7 +25,7 @@ def _import_dummy_data():
     cmd = python[
         'manage.py',
         'loaddata',
-        '{0}/dummy_data.json'.format(LOCATION)]
+        '{0}/dummyorders.json'.format(LOCATION)]
     cmd.run_fg()
 
 
@@ -58,13 +49,6 @@ class CatchAllExceptions(click.Group):
             exit()
 
 
-@click.command(help='Startup')
-def runfirst():
-    """ import required groups """
-    _make_group_migrations()
-    success('Group migration success')
-
-
 @click.command(help='Dummy Data')
 def dummydata():
     """ import dummy users """
@@ -82,7 +66,6 @@ def cli():
 
 
 cli.add_command(dummydata)
-cli.add_command(runfirst)
 
 
 if __name__ == '__main__':
