@@ -1,6 +1,7 @@
 <section class="nav justify-content-center">
     <a href="{% url 'index' %}" class="nav-item btn btn-primary">Home</a>
     <a href="{% url 'raise_pos' %}" class="nav-item btn btn-primary">Raise Order</a>
+    <a href="{% url 'my_orders' %}" class="nav-item btn btn-primary">My Orders</a>
     {% if user.is_superuser or user.is_accounts_admin and user.is_active %}
         <a href="/orders/pending" class="btn btn-primary">Order Admin Area</a>
     {% endif %}

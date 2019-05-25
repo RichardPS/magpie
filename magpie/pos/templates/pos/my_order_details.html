@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static order_extras %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" type="text/css" media="print">
+{% endblock styles %}
+
+{% block content %}
+    <div class="print-block">
+        <a href="#" id="print-button" onclick="window.print();return false;">A</a>
+    </div>
+
+    <ul class="ul_block">
+        <li>Ordered By: {{ order.ordered_by.get_full_name }}</li>
+        <li>Order Date: {{ order.date_ordered }}</li>
+        <li>Expected Delivery: {{ order.delivery_date }}</li>
+        <li>Reason: {{ order.reason }}</li>
+    </ul>
+    <br>
+    <h2>Company Address</h2>
+    <ul class="ul_block">
+        <li>{{ order.company_name }}</li>
+        <li>{{ order.address_one }}</li>
+        {% if order.address_two %}
+            <li>{{ order.address_two }}</li>
+        {% endif %}
+        <li>{{ order.city }}</li>
+        <li>{{ order.county }}</li>
+        <li>{{ order.post_code }}</li>
+        <li>{{ order.telephone }}</li>
+    </ul>
+    <br>
+    <h2>Order Items</h2>
+    {% for item in order.item_set.all %}
+        <ul class="order-item-block">
+                <li>{{ item.item_name }}</li>
+                <li>{{ item.item_qty }}</li>
+                <li>£{{ item.item_price }}</li>
+        </ul>
+    {% endfor %}
+
+    <ul class="order-item-block">
+        <li>Order Total: £{% get_total order.item_set.all %}</li>
+    </ul>
+    <input class="back-link" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+
+
+{% endblock %}

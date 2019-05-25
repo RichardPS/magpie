@@ -139,6 +139,31 @@ class OrderSummary(LoginRequiredMixin, DetailView):
         return context
 
 
+class MyOrders(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = "pos/my_orders.html"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(MyOrders, self).get_context_data(**kwargs)
+        context["page_name"] = "My Orders"
+        return context
+
+    def get_queryset(self):
+        return Order.objects.all().filter(ordered_by__pk=self.request.user.pk)
+
+
+class MyOrderDetails(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "pos/my_order_details.html"
+    pk_url_kwarg = "pk"
+
+    def get_context_data(self, **kwargs):
+        context = super(MyOrderDetails, self).get_context_data(**kwargs)
+        context["page_name"] = "Details for {0} order".format(self.object.company_name)
+        return context
+
+
 class AdminOrders(UserPassesTestMixin, ListView):
     model = Order
     template_name = "admin/order_list.html"

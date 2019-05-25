@@ -9,12 +9,16 @@ from .views import AdminOrderDetails
 from .views import AdminOrders
 from .views import EditUser
 from .views import Index
+from .views import MyOrders
+from .views import MyOrderDetails
 from .views import OrderSummary
 from .views import UserManagement
 
 urlpatterns = [
     path("", Index.as_view(), name="index"),
     path("raise_pos/", views.raise_pos, name="raise_pos"),
+    path("my_orders", MyOrders.as_view(), name="my_orders"),
+    path("my_order_details/<int:pk>", MyOrderDetails.as_view(), name="my_orders"),
     path("summary/<int:pk>", OrderSummary.as_view(), name="order_summary"),
     path("cancel_order/<int:pk>", views.cancel_order, name="cancel_order"),
     path("clear_order/<int:pk>", views.clear_order, name="clear_order"),
