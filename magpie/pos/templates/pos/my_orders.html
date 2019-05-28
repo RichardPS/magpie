@@ -5,13 +5,11 @@
     <title>Orders {{ page_name }}</title>
 {% endblock title %}
 
-{% block header %}
+{% block nav %}
     {% include 'pos/nav.html' %}
-{% endblock header %}
+{% endblock nav %}
 
 {% block content %}
-
-    <h2>Your Orders</h2>
     {% if object_list %}
         <table class="table" width="90%" cellpadding="5" cellspacing="0">
             <tr>

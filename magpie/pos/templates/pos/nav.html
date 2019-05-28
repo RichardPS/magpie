@@ -2,10 +2,10 @@
     <a href="{% url 'index' %}" class="nav-item btn btn-primary">Home</a>
     <a href="{% url 'raise_pos' %}" class="nav-item btn btn-primary">Raise Order</a>
     <a href="{% url 'my_orders' %}" class="nav-item btn btn-primary">My Orders</a>
-    {% if user.is_superuser or user.is_accounts_admin and user.is_active %}
-        <a href="/orders/pending" class="btn btn-primary">Order Admin Area</a>
+    {% if request.user.is_superuser or request.user.is_accounts_admin and request.user.is_active %}
+        <a href="/orders/pending" class="nav-item btn btn-primary">Order Admin Area</a>
     {% endif %}
-    {% if user.is_superuser or user.is_staff and user.is_active %}
-        <a href="{% url 'user_management' %}" class="btn btn-primary">User Management</a>
+    {% if request.user.is_superuser or request.user.is_staff and request.user.is_active %}
+        <a href="{% url 'user_management' %}" class="nav-item btn btn-primary">User Management</a>
     {% endif %}
 </section>

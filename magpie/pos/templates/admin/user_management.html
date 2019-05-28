@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block header %}
-    {% include 'pos/nav.html' %}
-{% endblock header %}
-
 {% block nav %}
-    <a href="/add_user" class="nav-item btn btn-primary">Add User</a>
+    {% include 'pos/nav.html' %}
 {% endblock nav %}
 
 {% block content %}
+<a href="/add_user" class="nav-item btn btn-primary">Add User</a>
 <br>
 <h2>Managers</h2>
 <table class="table">
@@ -35,7 +32,7 @@
             <td class="">{{ item.get_department_display }}</td>
             <td class="">{{ item.last_login }}</td>
             <td class="">{{ item.date_joined }}</td>
-            <td class=""><a href="edit_user/{{ item.pk }}">Edit User</a></td>
+            <td class=""><a href="edit_user/{{ item.pk }}" class="btn btn-warning">Edit User</a></td>
         </tr>
         {% endif %}
    {% endfor %}
@@ -65,7 +62,7 @@
             <td class="">{{ item.get_department_display }}</td>
             <td class="">{{ item.last_login }}</td>
             <td class="">{{ item.date_joined }}</td>
-            <td class=""><a href="edit_user/{{ item.pk }}">Edit User</a></td>
+            <td class=""><a href="edit_user/{{ item.pk }}" class="btn btn-warning">Edit User</a></td>
         </tr>
         {% endif %}
    {% endfor %}
@@ -95,7 +92,7 @@
             <td class="">{{ item.get_department_display }}</td>
             <td class="">{{ item.last_login }}</td>
             <td class="">{{ item.date_joined }}</td>
-            <td class=""><a href="edit_user/{{ item.pk }}">Edit User</a></td>
+            <td class=""><a href="edit_user/{{ item.pk }}" class="btn btn-warning">Edit User</a></td>
         </tr>
         {% endif %}
    {% endfor %}

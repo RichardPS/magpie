@@ -5,19 +5,18 @@
     <title>Orders {{ page_name }}</title>
 {% endblock title %}
 
-{% block header %}
-    {% include 'pos/nav.html' %}
-{% endblock header %}
-
 {% block nav %}
-    <a class="nav-item nav-link btn-primary" href="/orders/pending">Pending</a>
-    <a class="nav-item nav-link btn-primary" href="/orders/authorised">Authorised</a>
-    <a class="nav-item nav-link btn-primary" href="/orders/declined">Declined</a>
-    <a class="nav-item nav-link btn-primary" href="/orders/cleared">Cleared</a>
-    <a class="nav-item nav-link btn-primary" href="/orders/canceled">Canceled</a>
+    {% include 'pos/nav.html' %}
 {% endblock nav %}
 
 {% block content %}
+    <section class="nav justify-content-center">
+        <a class="nav-item nav-link btn-primary" href="/orders/pending">Pending</a>
+        <a class="nav-item nav-link btn-primary" href="/orders/authorised">Authorised</a>
+        <a class="nav-item nav-link btn-primary" href="/orders/declined">Declined</a>
+        <a class="nav-item nav-link btn-primary" href="/orders/cleared">Cleared</a>
+        <a class="nav-item nav-link btn-primary" href="/orders/canceled">Canceled</a>
+    </section>
 
     <h2>Orders {{ page_name }}</h2>
     {% if object_list %}

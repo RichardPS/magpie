@@ -32,14 +32,14 @@
         {% endif %}
     </section>
     <div class="container">
+        <nav class="nav nav-pills nav-fill justify-content-center">
+            {% block nav %}{% endblock nav %}
+        </nav>
+
         <header>
             <h1>{{ page_name }}</h1>
             {% block header %}{% endblock header %}
         </header>
-
-        <nav class="nav nav-pills nav-fill justify-content-center">
-            {% block nav %}{% endblock nav %}
-        </nav>
 
         <section class="content">
             {% block content %}{% endblock content %}

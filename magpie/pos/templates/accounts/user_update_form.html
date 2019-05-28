@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block nav %}
+    {% include 'pos/nav.html' %}
+{% endblock nav %}
+
 {% block content %}
 <br>
 <input class="back-link" type=button value="Previous Page" onClick="javascript:history.go(-1);">
@@ -14,7 +18,7 @@
                     {{ item }}
                 </div>
             {% endfor %}
-            <input type="submit" value="Update">
         </ul>
+        <input type="submit" value="Update">
     </form>
 {% endblock content %}
