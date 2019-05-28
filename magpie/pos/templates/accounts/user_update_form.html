@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-{% load static %}
+
+{% block nav %}
+    {% include 'pos/nav.html' %}
+{% endblock nav %}
 
 {% block content %}
 <br>
@@ -15,11 +18,7 @@
                     {{ item }}
                 </div>
             {% endfor %}
-            <input type="submit" value="Add User">
         </ul>
+        <input type="submit" value="Update">
     </form>
 {% endblock content %}
-
-{% block scripts %}
-    <script src="{% static 'js/user-name.js' %}"></script>
-{% endblock scripts %}

@@ -42,12 +42,6 @@
     <ul class="order-item-block">
         <li>Order Total: £{% get_total order.item_set.all %}</li>
     </ul>
-    <br>
-    {% if order.decline_message %}
-        <p class="red bold">This Order has been Declined by:</p>
-        <p class="red bold">{{ order.decline_message }}</p>
-    {% endif %}
-    <br>
     <input class="back-link" type=button value="Previous Page" onClick="javascript:history.go(-1);">
 
 

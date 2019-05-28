@@ -1,42 +1,24 @@
 [
   {
-    "model":"auth.user",
-    "pk":30,
-    "fields":{
-      "password":"pbkdf2_sha256$150000$aLDxerIdjlc1$o+l+W2KDuMBnVJ9KaJPkDdA92YP3vT8uGmx7Qv6z4dA=",
-      "last_login":null,
-      "is_superuser":false,
-      "username":"t.user",
-      "first_name":"Technical",
-      "last_name":"User",
-      "email":"",
-      "is_staff":false,
-      "is_active":true,
-      "date_joined":"2019-05-12T16:08:47Z",
-      "groups":[
-        30
-      ],
-      "user_permissions":[
-
-      ]
-    }
-  },
-  {
-    "model":"auth.user",
+    "model":"accounts.user",
     "pk":10,
     "fields":{
-      "password":"pbkdf2_sha256$150000$Yp9CnKAniTCa$fBzp2c7igOpN96ZoDRAohJJkZ8+7563L4yoCq+k4O9c=",
+      "password":"pbkdf2_sha256$150000$CCXYoidfoJHd$sE5wSH/JUeGEdMfjnQD+KGlZ+doE1al1d5THSzsIiIk=",
       "last_login":null,
       "is_superuser":false,
       "username":"p.user",
       "first_name":"Production",
       "last_name":"User",
-      "email":"",
+      "email":"p.user@email.com",
       "is_staff":false,
       "is_active":true,
-      "date_joined":"2019-05-12T16:09:39Z",
+      "date_joined":"2019-05-23T23:07:06Z",
+      "department":"PR",
+      "is_manager":false,
+      "is_director":false,
+      "is_accounts_admin":false,
       "groups":[
-        10
+
       ],
       "user_permissions":[
 
@@ -44,21 +26,25 @@
     }
   },
   {
-    "model":"auth.user",
+    "model":"accounts.user",
     "pk":20,
     "fields":{
-      "password":"pbkdf2_sha256$150000$hrV8uavEBGqT$y9guzChVPueWmSUvmSf4OfUZTKKYRHrx6vD0POthWfo=",
+      "password":"pbkdf2_sha256$150000$Tc5lIhK03Evp$3J/mslB+jTf6aGpbzbtKx3ivFXgrLnMXx+oJaUg0Tsk=",
       "last_login":null,
       "is_superuser":false,
       "username":"s.user",
       "first_name":"Sales",
       "last_name":"User",
-      "email":"",
+      "email":"s.user@email.com",
       "is_staff":false,
       "is_active":true,
-      "date_joined":"2019-05-12T18:18:42Z",
+      "date_joined":"2019-05-23T23:07:51Z",
+      "department":"SA",
+      "is_manager":false,
+      "is_director":false,
+      "is_accounts_admin":false,
       "groups":[
-        20
+
       ],
       "user_permissions":[
 
@@ -66,21 +52,207 @@
     }
   },
   {
-    "model":"auth.user",
+    "model":"accounts.user",
+    "pk":30,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$bSufJ1M0V8dl$Z4WZuvOzsFMUx45TXheE5dTOfc6+cu1GQVI0hBEgn+Y=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"t.user",
+      "first_name":"Technical",
+      "last_name":"User",
+      "email":"t.user@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:08:26Z",
+      "department":"TE",
+      "is_manager":false,
+      "is_director":false,
+      "is_accounts_admin":false,
+      "groups":[
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
     "pk":40,
     "fields":{
-      "password":"pbkdf2_sha256$150000$0pRO54IuXBO6$0bWm5BkCOYAU8McGxAKu/e10vy0HeGj0xh1zo5Gu2vU=",
+      "password":"pbkdf2_sha256$150000$Ld1Bf6zezk2q$MwPLen2IIrYXjREHkS9MjO6phzMM3swd5+cMQla4KcQ=",
       "last_login":null,
       "is_superuser":false,
       "username":"f.user",
       "first_name":"Finance",
       "last_name":"User",
-      "email":"",
+      "email":"f.user@email.com",
       "is_staff":false,
       "is_active":true,
-      "date_joined":"2019-05-12T18:19:24Z",
+      "date_joined":"2019-05-23T23:09:22Z",
+      "department":"FI",
+      "is_manager":false,
+      "is_director":false,
+      "is_accounts_admin":false,
       "groups":[
-        40
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
+    "pk":50,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$7HOx4MLyVhmq$F3+XMicJVkXeud/4POJ75213BIf4D98JgZ1YEgRuX70=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"p.manager",
+      "first_name":"Production",
+      "last_name":"Manager",
+      "email":"p.manager@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:10:00Z",
+      "department":"PR",
+      "is_manager":true,
+      "is_director":false,
+      "is_accounts_admin":false,
+      "groups":[
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
+    "pk":60,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$e4AUKjNWnQAs$yvmvUDCGRmMqGz3/j/CR0FNAabJWbpYRk8XSjsqOcoE=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"s.manager",
+      "first_name":"Sales",
+      "last_name":"Manager",
+      "email":"s.manager@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:10:55Z",
+      "department":"SA",
+      "is_manager":true,
+      "is_director":false,
+      "is_accounts_admin":false,
+      "groups":[
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
+    "pk":70,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$JmxUuJbl9tvx$lExw4+oZLnbyM5sxA3lPbWo6vwiUqE/qlwZwuVWlc8c=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"t.manager",
+      "first_name":"Technical",
+      "last_name":"Manager",
+      "email":"t.manager@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:16:51Z",
+      "department":"TE",
+      "is_manager":true,
+      "is_director":false,
+      "is_accounts_admin":false,
+      "groups":[
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
+    "pk":80,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$zLDnyNGq8UKY$Z7Nroo49VYCasvsPltYAJ5Th6LkpCAUJSbjpZmSSHcg=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"f.manager",
+      "first_name":"Finance",
+      "last_name":"Manager",
+      "email":"f.manager@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:17:47Z",
+      "department":"FI",
+      "is_manager":true,
+      "is_director":false,
+      "is_accounts_admin":false,
+      "groups":[
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
+    "pk":90,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$ImTtZreu3VzV$TCB7QgDiMOfI+R1GlI0/Y0540xLR8Med5f/x1DUXglg=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"a.admin",
+      "first_name":"Accounts",
+      "last_name":"Admin",
+      "email":"a.admin@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:19:01Z",
+      "department":"",
+      "is_manager":false,
+      "is_director":false,
+      "is_accounts_admin":true,
+      "groups":[
+
+      ],
+      "user_permissions":[
+
+      ]
+    }
+  },
+  {
+    "model":"accounts.user",
+    "pk":100,
+    "fields":{
+      "password":"pbkdf2_sha256$150000$AkweMMDxoS0g$oLalMMAKb3brHFJj0f3hcZdFhtljEBcFxY2yUBEt+d0=",
+      "last_login":null,
+      "is_superuser":false,
+      "username":"m.director",
+      "first_name":"Managing",
+      "last_name":"Director",
+      "email":"m.director@email.com",
+      "is_staff":false,
+      "is_active":true,
+      "date_joined":"2019-05-23T23:20:12Z",
+      "department":"",
+      "is_manager":false,
+      "is_director":true,
+      "is_accounts_admin":false,
+      "groups":[
+
       ],
       "user_permissions":[
 

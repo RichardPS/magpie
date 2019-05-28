@@ -40,7 +40,7 @@
         <li>Order Total: £{% get_total order.item_set.all %}</li>
     </ul>
 
-    <a href="{% url 'index' %}">Close</a>
+    <a href="{% url 'index' %}" class="nav-item btn btn-primary">Close</a>
 
 {% endblock content %}
 

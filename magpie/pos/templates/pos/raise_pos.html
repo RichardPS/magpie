@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block nav %}
+    {% include 'pos/nav.html' %}
+{% endblock nav %}
+
 {% block content %}
 
     {% if messages %}
