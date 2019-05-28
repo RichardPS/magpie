@@ -71,10 +71,10 @@ def get_auth_required(order_total):
 def send_email(email, auth, pk, order, order_items):
     """ get email templates """
     msg_plain = render_to_string(
-        "pos_email.txt", {"auth": auth, "pk": pk, "order": order, "items": order_items}
+        "email/pos_email.txt", {"auth": auth, "pk": pk, "order": order, "items": order_items}
     )
     msg_html = render_to_string(
-        "pos_email.html", {"auth": auth, "pk": pk, "order": order, "items": order_items}
+        "email/pos_email.html", {"auth": auth, "pk": pk, "order": order, "items": order_items}
     )
 
     """ send email to recipient to accept of decline """
