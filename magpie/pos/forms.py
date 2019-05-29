@@ -108,9 +108,9 @@ class AddUserForm(forms.ModelForm):
             "first_name",
             "last_name",
             "username",
+            "email",
             "is_active",
             "department",
-            "email",
             "is_manager",
         ]
 

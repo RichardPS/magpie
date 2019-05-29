@@ -11,6 +11,7 @@ from .views import EditUser
 from .views import Index
 from .views import MyOrders
 from .views import MyOrderDetails
+from .views import NoPermissions
 from .views import OrderSummary
 from .views import UserManagement
 
@@ -26,6 +27,7 @@ urlpatterns = [
     path("orders/<slug:area>", AdminOrders.as_view()),
     path("order_details/<int:pk>", AdminOrderDetails.as_view()),
     path("user_management", UserManagement.as_view(), name="user_management"),
+    path("no_permissions", NoPermissions.as_view(), name="no_permissions"),
     path("edit_user/<int:pk>", EditUser.as_view()),
     path("add_user/", AddUser.as_view()),
     path(

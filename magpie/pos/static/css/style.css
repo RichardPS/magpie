@@ -78,6 +78,14 @@ h6,
   font-weight: bold;
 }
 
+header h1::before {
+    content: url(../images/logo.svg);
+    background-position: center;
+    display: inline-block;
+    width: 1.9rem;
+    margin-right: 6px;
+}
+
 footer {
   display: block;
   position: fixed;

@@ -24,7 +24,7 @@ from .forms import OrderForm
 
 from .functions import accept_auth
 from .functions import auth_complete
-from .functions import check_order_value
+from .functions import formset_order_total
 from .functions import decline_auth
 from .functions import get_auth_required
 from .functions import order_saved
@@ -61,7 +61,7 @@ def raise_pos(
 
         """ get order variables - order total and if auth if required """
         if order_form.is_valid() & item_form_set.is_valid():
-            order_total = check_order_value(item_form_set)
+            order_total = formset_order_total(item_form_set)
             """ check order value """
             if order_total >= 200:
                 """ auth required """
@@ -188,7 +188,7 @@ class AdminOrders(UserPassesTestMixin, ListView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class AdminOrderDetails(UserPassesTestMixin, DetailView):
@@ -208,7 +208,7 @@ class AdminOrderDetails(UserPassesTestMixin, DetailView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 def cancel_order(request, pk):
@@ -265,7 +265,7 @@ class AuthOrder(UserPassesTestMixin, DetailView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class UserManagement(UserPassesTestMixin, ListView):
@@ -283,7 +283,7 @@ class UserManagement(UserPassesTestMixin, ListView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class EditUser(UserPassesTestMixin, UpdateView):
@@ -302,7 +302,7 @@ class EditUser(UserPassesTestMixin, UpdateView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class AddUser(UserPassesTestMixin, CreateView):
@@ -320,4 +320,15 @@ class AddUser(UserPassesTestMixin, CreateView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
+
+
+class NoPermissions(TemplateView):
+    template_name = "admin/no_permissions.html"
+
+    """ No permissions """
+
+    def get_context_data(self, **kwargs):
+        context = super(NoPermissions, self).get_context_data(**kwargs)
+        context["page_name"] = "Access Denied"
+        return context
