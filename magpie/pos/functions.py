@@ -30,13 +30,13 @@ def order_saved(pk):
     send_email(department_manager_email, "dm", pk, order, order_items)
 
     """ get total value of order """
-    if get_order_total(order_items) > 2000:
+    if queryset_order_total(order_items) > 2000:
         md_user = get_object_or_404(User, is_director=True)
         md_email = md_user.email
         send_email(md_email, "md", pk, order, order_items)
 
 
-def check_order_value(items):
+def formset_order_total(items):
     order_total = 0
     for item in items:
         _price = float(item["item_price"].value())
@@ -45,7 +45,7 @@ def check_order_value(items):
     return order_total
 
 
-def get_order_total(items):
+def queryset_order_total(items):
     order_total = 0
     for item in items:
         _price = item.item_price

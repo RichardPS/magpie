@@ -61,7 +61,7 @@ def raise_pos(
 
         """ get order variables - order total and if auth if required """
         if order_form.is_valid() & item_form_set.is_valid():
-            order_total = check_order_value(item_form_set)
+            order_total = formset_order_total(item_form_set)
             """ check order value """
             if order_total >= 200:
                 """ auth required """
