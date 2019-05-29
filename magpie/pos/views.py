@@ -188,7 +188,7 @@ class AdminOrders(UserPassesTestMixin, ListView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class AdminOrderDetails(UserPassesTestMixin, DetailView):
@@ -208,7 +208,7 @@ class AdminOrderDetails(UserPassesTestMixin, DetailView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 def cancel_order(request, pk):
@@ -265,7 +265,7 @@ class AuthOrder(UserPassesTestMixin, DetailView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class UserManagement(UserPassesTestMixin, ListView):
@@ -283,7 +283,7 @@ class UserManagement(UserPassesTestMixin, ListView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class EditUser(UserPassesTestMixin, UpdateView):
@@ -302,7 +302,7 @@ class EditUser(UserPassesTestMixin, UpdateView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
 
 
 class AddUser(UserPassesTestMixin, CreateView):
@@ -320,4 +320,15 @@ class AddUser(UserPassesTestMixin, CreateView):
 
     def handle_no_permission(self):
         messages.error(self.request, "No Access Permissions")
-        return redirect("index")
+        return redirect("no_permissions")
+
+
+class NoPermissions(TemplateView):
+    template_name = "admin/no_permissions.html"
+
+    """ No permissions """
+
+    def get_context_data(self, **kwargs):
+        context = super(NoPermissions, self).get_context_data(**kwargs)
+        context["page_name"] = "Access Denied"
+        return context
