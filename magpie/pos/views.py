@@ -24,7 +24,7 @@ from .forms import OrderForm
 
 from .functions import accept_auth
 from .functions import auth_complete
-from .functions import check_order_value
+from .functions import formset_order_total
 from .functions import decline_auth
 from .functions import get_auth_required
 from .functions import order_saved

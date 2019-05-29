@@ -50,10 +50,18 @@
                     <td>{{ order.get_md_auth_display }}</td>
                     <td><a href="/order_details/{{ order.pk }}" class="btn btn-primary">View Details</a></td>
                     {% if page_name == 'Authorised' %}
-                        <td><a href="/clear_order/{{ order.pk }}" class="btn btn-warning">Clear Order</a></td>
+                        <td>
+                            <a href="/clear_order/{{ order.pk }}" class="btn btn-warning" onclick="return confirm('Are you sure you want to clear this order?')">
+                                Clear Order
+                            </a>
+                        </td>
                     {% endif %}
                     {% if page_name != 'Canceled' %}
-                        <td><a href="/cancel_order/{{ order.pk }}" class="btn btn-danger">Cancel Order</a></td>
+                        <td>
+                            <a href="/cancel_order/{{ order.pk }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this order?')">
+                                Cancel Order
+                            </a>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}
