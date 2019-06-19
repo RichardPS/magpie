@@ -87,6 +87,20 @@ def send_email(email, auth, pk, order, order_items):
     send_mail(subject, msg_plain, from_email, [to_email], html_message=msg_html)
 
 
+def resend_email(auth, pk):
+    order_items = Item.objects.all().filter(order__pk=pk)
+    order = Order.objects.get(pk=pk)
+    if auth == "dm":
+        user = order.ordered_by
+        department = user.department
+        department_manager = User.objects.get(department=department, is_manager=True)
+        email = department_manager.email
+    else:
+        md_user = get_object_or_404(User, is_director=True)
+        email = md_user.email
+    send_email(email, auth, pk, order, order_items)
+
+
 def auth_complete(pk, auth):
     complete = False
     order = get_object_or_404(Order, pk=pk)
