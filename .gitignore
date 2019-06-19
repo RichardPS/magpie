@@ -9,6 +9,7 @@ migrations/
 
 .DS_Store
 .git
+.pytest_cache
 
 pyvenv.cfg
 
