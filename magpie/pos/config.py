@@ -28,9 +28,6 @@ GROUP_MANAGERS = {
 }
 
 
-""" MD EMAIL """
-MD_EMAIL = "geoff.millington@primarysite.net"
-
 """ hostname """
 """ TESTING ONLY """
 HOSTNAME = "localhost"
