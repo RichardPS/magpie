@@ -24,10 +24,11 @@ from .forms import OrderForm
 
 from .functions import accept_auth
 from .functions import auth_complete
-from .functions import formset_order_total
 from .functions import decline_auth
+from .functions import formset_order_total
 from .functions import get_auth_required
 from .functions import order_saved
+from .functions import resend_email
 
 from .models import Order
 
@@ -225,6 +226,20 @@ def clear_order(request, pk):
     order_to_clear.order_status = STATUS_OPTIONS[3][0]
     order_to_clear.save()
     return redirect("/orders/cleared")
+
+
+def resend_email_request(request, auth, pk):
+    resend_email(auth, pk)
+    return redirect("email_resent")
+
+
+class EmailResentSuccess(TemplateView):
+    template_name = "admin/email_resent_success.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(EmailResentSuccess, self).get_context_data(**kwargs)
+        context["page_name"] = "Email Resent"
+        return context
 
 
 class AuthOrder(UserPassesTestMixin, DetailView):
