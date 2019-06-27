@@ -10,4 +10,4 @@ Adds dummy users
 
 Adds dummy order data
 
-`python manage.py devtools/run.py dummydata`
+`python devtools/run.py dummydata`

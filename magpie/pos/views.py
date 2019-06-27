@@ -14,6 +14,7 @@ from django.views.generic.edit import UpdateView
 from accounts.models import User
 
 from .config import AUTH_OPTIONS
+from .config import LOWERBREAKPOINT
 from .config import STATUS_OPTIONS
 
 from .forms import AddUserForm
@@ -64,7 +65,7 @@ def raise_pos(
         if order_form.is_valid() & item_form_set.is_valid():
             order_total = formset_order_total(item_form_set)
             """ check order value """
-            if order_total >= 200:
+            if order_total >= LOWERBREAKPOINT:
                 """ auth required """
                 auth_required = get_auth_required(order_total)
                 _order = order_form.save(commit=False)

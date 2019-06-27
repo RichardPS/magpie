@@ -28,9 +28,10 @@ GROUP_MANAGERS = {
 }
 
 
-""" MD EMAIL """
-MD_EMAIL = "geoff.millington@primarysite.net"
-
 """ hostname """
 """ TESTING ONLY """
 HOSTNAME = "localhost"
+
+""" Order total break points """
+LOWERBREAKPOINT = 200
+UPPERBREAKPOINT = 2000
