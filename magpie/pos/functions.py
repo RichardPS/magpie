@@ -7,8 +7,9 @@ from django.template.loader import render_to_string
 from accounts.models import User
 
 from .config import AUTH_RESPONSE
-from .config import MD_EMAIL
+from .config import LOWERBREAKPOINT
 from .config import STATUS_OPTIONS
+from .config import UPPERBREAKPOINT
 
 from .models import Item
 from .models import Order
@@ -30,7 +31,7 @@ def order_saved(pk):
     send_email(department_manager_email, "dm", pk, order, order_items)
 
     """ get total value of order """
-    if queryset_order_total(order_items) > 2000:
+    if queryset_order_total(order_items) > UPPERBREAKPOINT:
         md_user = get_object_or_404(User, is_director=True)
         md_email = md_user.email
         send_email(md_email, "md", pk, order, order_items)
@@ -56,10 +57,10 @@ def queryset_order_total(items):
 
 def get_auth_required(order_total):
     """ get authorisation required """
-    if order_total < 200:
+    if order_total < LOWERBREAKPOINT:
         """ no PO required """
         auth_option = "none"
-    elif order_total < 2000:
+    elif order_total < UPPERBREAKPOINT:
         """ manager auth required """
         auth_option = 0
     else:
