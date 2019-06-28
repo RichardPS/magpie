@@ -51,7 +51,9 @@ class Index(TemplateView):
 
 @login_required
 def raise_pos(
-    request, template_name="pos/raise_pos.html", page_name="Raise Purchase Order"
+    request,
+    template_name="pos/raise_pos.html",
+    page_name="Raise Purchase Order",
 ):
 
     """ purchase order form """
@@ -162,7 +164,9 @@ class MyOrderDetails(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MyOrderDetails, self).get_context_data(**kwargs)
-        context["page_name"] = "Details for {0} order".format(self.object.company_name)
+        context["page_name"] = "Details for {0} order".format(
+            self.object.company_name
+        )
         return context
 
 
@@ -202,7 +206,9 @@ class AdminOrderDetails(UserPassesTestMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(AdminOrderDetails, self).get_context_data(**kwargs)
-        context["page_name"] = "Details for {0} order".format(self.object.company_name)
+        context["page_name"] = "Details for {0} order".format(
+            self.object.company_name
+        )
         return context
 
     def test_func(self):
@@ -257,7 +263,9 @@ class AuthOrder(UserPassesTestMixin, DetailView):
             self.object.company_name
         )
         context["auth"] = self.kwargs["pk"]
-        context["actioned"] = auth_complete(self.kwargs["pk"], self.kwargs["auth"])
+        context["actioned"] = auth_complete(
+            self.kwargs["pk"], self.kwargs["auth"]
+        )
         context["form"] = DeclineMessage(initial={"post": self.object})
         return context
 

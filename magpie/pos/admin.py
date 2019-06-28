@@ -23,10 +23,7 @@ class OrderAdmin(admin.ModelAdmin):
         "auth_required",
         "order_status",
     )
-    ordering = [
-        "-date_ordered",
-        "-delivery_date"
-    ]
+    ordering = ["-date_ordered", "-delivery_date"]
     search_fields = (
         "company_name",
         "ordered_by",

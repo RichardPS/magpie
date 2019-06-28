@@ -16,7 +16,11 @@ AUTH_OPTIONS = (
 
 
 """ auth response """
-AUTH_RESPONSE = (("null", "-"), ("accepted", "Accepted"), ("declined", "Declined"))
+AUTH_RESPONSE = (
+    ("null", "-"),
+    ("accepted", "Accepted"),
+    ("declined", "Declined"),
+)
 
 
 """ group managers """

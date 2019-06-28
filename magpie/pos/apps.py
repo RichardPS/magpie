@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 
 class PosConfig(AppConfig):
-    name = 'pos'
+    name = "pos"
     verbose_name = "Purchase Order System"
 
     def ready(self):

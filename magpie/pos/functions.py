@@ -25,7 +25,9 @@ def order_saved(pk):
     user = order.ordered_by
     department = user.department
 
-    department_manager = User.objects.get(department=department, is_manager=True)
+    department_manager = User.objects.get(
+        department=department, is_manager=True
+    )
 
     department_manager_email = department_manager.email
     send_email(department_manager_email, "dm", pk, order, order_items)
@@ -72,10 +74,12 @@ def get_auth_required(order_total):
 def send_email(email, auth, pk, order, order_items):
     """ get email templates """
     msg_plain = render_to_string(
-        "email/pos_email.txt", {"auth": auth, "pk": pk, "order": order, "items": order_items}
+        "email/pos_email.txt",
+        {"auth": auth, "pk": pk, "order": order, "items": order_items},
     )
     msg_html = render_to_string(
-        "email/pos_email.html", {"auth": auth, "pk": pk, "order": order, "items": order_items}
+        "email/pos_email.html",
+        {"auth": auth, "pk": pk, "order": order, "items": order_items},
     )
 
     """ send email to recipient to accept of decline """
@@ -94,7 +98,9 @@ def resend_email(auth, pk):
     if auth == "dm":
         user = order.ordered_by
         department = user.department
-        department_manager = User.objects.get(department=department, is_manager=True)
+        department_manager = User.objects.get(
+            department=department, is_manager=True
+        )
         email = department_manager.email
     else:
         md_user = get_object_or_404(User, is_director=True)

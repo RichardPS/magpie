@@ -11,7 +11,9 @@ from .config import STATUS_OPTIONS
 class Order(models.Model):
     """ order model """
 
-    ordered_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ordered_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
     company_name = models.CharField(max_length=255, verbose_name="Company Name")
     address_one = models.CharField(max_length=255, verbose_name="Address One")
     address_two = models.CharField(

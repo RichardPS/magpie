@@ -1,4 +1,4 @@
-# 3rd party
+# Django
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
@@ -20,12 +20,18 @@ urlpatterns = [
     path("", Index.as_view(), name="index"),
     path("raise_pos/", views.raise_pos, name="raise_pos"),
     path("my_orders", MyOrders.as_view(), name="my_orders"),
-    path("my_order_details/<int:pk>", MyOrderDetails.as_view(), name="my_orders"),
+    path(
+        "my_order_details/<int:pk>", MyOrderDetails.as_view(), name="my_orders"
+    ),
     path("summary/<int:pk>", OrderSummary.as_view(), name="order_summary"),
     path("cancel_order/<int:pk>", views.cancel_order, name="cancel_order"),
     path("clear_order/<int:pk>", views.clear_order, name="clear_order"),
     path("auth_order/<int:pk>/<slug:auth>/", views.AuthOrder.as_view()),
-    path("resend/<slug:auth>/<int:pk>", views.resend_email_request, name="resend_email"),
+    path(
+        "resend/<slug:auth>/<int:pk>",
+        views.resend_email_request,
+        name="resend_email",
+    ),
     path("email_resent/", EmailResentSuccess.as_view(), name="email_resent"),
     path("orders/<slug:area>", AdminOrders.as_view()),
     path("order_details/<int:pk>", AdminOrderDetails.as_view()),
